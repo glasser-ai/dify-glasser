@@ -4,8 +4,6 @@
 **Version:** 0.3.3
 **Type:** tool
 
-[简体中文](README_zh_Hans.md)
-
 Premium data for Dify agents and workflows through **one Glasser Key**: find people, company intelligence, SEO research, web research and social research, backed by Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa, ScrapeCreators and more. The agent says what data it wants; Glasser decides which provider serves it. Pay per call, no signup at each vendor.
 
 Glasser is a broker. It sells runnable third-party API operations under a single Key. Each tool call becomes one Glasser run; the response is the provider's own output, with the exact charge and a link to the run in the Glasser console.
