@@ -29,7 +29,7 @@ Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hun
 
 - [x] I have read and followed the [Marketplace submission requirements](https://github.com/langgenius/dify-plugins/blob/main/docs/plugin-submission-requirements.md).
 - [x] I have read and comply with the Plugin Developer Agreement.
-- [ ] I tested this plugin on Dify Community Edition and Dify Cloud, or documented any limitation below.
+- [x] I tested this plugin on Dify Community Edition and Dify Cloud, or documented any limitation below.
 - [x] The package contains only files needed at runtime.
 - [x] The package does not contain secrets, local credentials, `.env` files, `.git` directories, virtual environments, caches, logs, or IDE files.
 - [x] The package does not contain executables or bundled binaries, or I explained why they are required below.
