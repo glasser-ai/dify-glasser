@@ -1,0 +1,30 @@
+version: 0.1.0
+type: plugin
+author: glasser-ai
+name: glasser
+label:
+  en_US: Glasser
+  zh_Hans: Glasser
+description:
+  en_US: Paid third-party API endpoints for agents through one Glasser Key. Search the data sources, inspect the exact price, run, pay per call.
+  zh_Hans: 一个 Glasser Key 调用付费第三方 API：搜索数据源、查看精确价格、执行、按次付费。
+icon: icon.svg
+repo: https://github.com/glasser-ai/dify-glasser
+resource:
+  memory: 268435456
+  permission: {}
+plugins:
+  tools:
+    - provider/glasser.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+created_at: 2026-09-17T11:27:01+08:00
+privacy: PRIVACY.md
+verified: false

@@ -1,0 +1,22 @@
+# Development state — never ships in the .difypkg
+.git/
+.gitignore
+.github/
+.venv/
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
+*.difypkg
+tests/
+scripts/
+uv.lock

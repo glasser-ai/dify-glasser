@@ -1,0 +1,15 @@
+identity:
+  name: "balance"
+  author: "glasser-ai"
+  label:
+    en_US: "Balance"
+    zh_Hans: "余额"
+description:
+  human:
+    en_US: "The workspace's balance in USD: balance, held by in-flight runs, and available. Also the cheapest check that the Key works."
+    zh_Hans: "Workspace 的美元余额：余额、进行中 runs 的预留、可用额度。也是最便宜的 Key 有效性检查。"
+  llm: "The workspace's balance in USD: balance, held (reserved by in-flight runs), available. Also the cheapest probe that the key works. Amounts are exact decimal strings."
+parameters: []
+extra:
+  python:
+    source: tools/balance.py

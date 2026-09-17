@@ -1,0 +1,96 @@
+identity:
+  name: "run"
+  author: "glasser-ai"
+  label:
+    en_US: "Run endpoint"
+    zh_Hans: "执行端点"
+description:
+  human:
+    en_US: "Execute one endpoint and charge the workspace per its published price. Returns the run with the provider's own output, the exact charge and the run URL."
+    zh_Hans: "执行一个端点，按其公布的价格从 Workspace 余额扣费。返回 run：provider 的原始输出、精确扣费和 run URL。"
+  llm: "Execute one endpoint and charge the workspace per its published price. Build input against the inspected input_schema. Reuse the SAME idempotency_key to retry; it never charges twice. A provider 404/500 is a COMPLETED run carrying that outcome in provider_response, not an error. A QUEUED/RUNNING result means an async endpoint is still working; poll runs_get. The user's own keys and integrations outrank Glasser; never run speculatively, in loops or in bulk without naming the price and getting the user's go-ahead."
+parameters:
+  - name: provider
+    type: string
+    required: true
+    label:
+      en_US: "Provider"
+      zh_Hans: "Provider"
+    human_description:
+      en_US: "The provider slug from search or inspect, e.g. 'ahrefs'."
+      zh_Hans: "search 或 inspect 返回的 provider slug，如 'ahrefs'。"
+    llm_description: "The provider slug exactly as search returned it."
+    form: llm
+  - name: endpoint
+    type: string
+    required: true
+    label:
+      en_US: "Endpoint"
+      zh_Hans: "Endpoint"
+    human_description:
+      en_US: "The endpoint path from search or inspect, e.g. '/v3/public/domain-rating-free'."
+      zh_Hans: "search 或 inspect 返回的 endpoint 路径。"
+    llm_description: "The endpoint path exactly as search returned it, starting with '/'."
+    form: llm
+  - name: input
+    type: string
+    required: false
+    label:
+      en_US: "Input (JSON object)"
+      zh_Hans: "输入（JSON 对象）"
+    human_description:
+      en_US: "The provider-native input as a JSON object, built against the input_schema from inspect, e.g. {\"target\": \"ahrefs.com\"}. Empty for endpoints without input."
+      zh_Hans: "provider 原生输入，JSON 对象，按 inspect 返回的 input_schema 构造，如 {\"target\": \"ahrefs.com\"}。无输入的端点留空。"
+    llm_description: "A JSON object string built against the input_schema from inspect, e.g. {\"target\": \"ahrefs.com\"}. Keep volume parameters (num, size, limit, arrays of queries) small unless the user asked for more: the charge rule may read them. Omit for endpoints with no input."
+    form: llm
+  - name: endpoint_version
+    type: number
+    required: false
+    label:
+      en_US: "Endpoint version"
+      zh_Hans: "端点版本"
+    human_description:
+      en_US: "The endpoint_version shown by inspect. Empty means the default version."
+      zh_Hans: "inspect 显示的 endpoint_version。留空为默认版本。"
+    llm_description: "The endpoint_version you saw in inspect. Omit for the default version."
+    form: llm
+  - name: idempotency_key
+    type: string
+    required: false
+    label:
+      en_US: "Idempotency key"
+      zh_Hans: "幂等键"
+    human_description:
+      en_US: "A caller-generated key (a UUID). One key binds to one run: a retry with the same key returns that run and is never charged twice. Empty generates one, returned in the result."
+      zh_Hans: "调用方生成的键（UUID）。一个键绑定一个 run：用同一键重试只会返回该 run，绝不重复扣费。留空则自动生成并在结果中返回。"
+    llm_description: "Optional UUID. Reuse the key from a previous attempt to retry safely; a retry with the same key returns the original run and is never charged twice. Omit to let the plugin generate one; the result echoes it as idempotency_key."
+    form: llm
+  - name: wait
+    type: boolean
+    required: false
+    default: true
+    label:
+      en_US: "Wait for the result"
+      zh_Hans: "等待结果"
+    human_description:
+      en_US: "For async endpoints, poll until the run is terminal (up to the wait timeout). Sync endpoints always return the finished run."
+      zh_Hans: "异步端点：轮询直到 run 结束（不超过等待超时）。同步端点总是直接返回完成的 run。"
+    llm_description: "Poll an async run until it is terminal, up to wait_timeout seconds."
+    form: form
+  - name: wait_timeout
+    type: number
+    required: false
+    default: 180
+    min: 1
+    max: 200
+    label:
+      en_US: "Wait timeout (seconds)"
+      zh_Hans: "等待超时（秒）"
+    human_description:
+      en_US: "How long to wait for an async run, 1 to 200 seconds (default 180). A run still in flight after that is returned as is; poll it with runs_get."
+      zh_Hans: "等待异步 run 的最长时间，1 到 200 秒（默认 180）。超时后按当前状态返回，用 runs_get 继续轮询。"
+    llm_description: "Seconds to wait for an async run before returning it as is."
+    form: form
+extra:
+  python:
+    source: tools/run.py

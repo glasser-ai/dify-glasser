@@ -1,0 +1,26 @@
+identity:
+  name: "runs_stop"
+  author: "glasser-ai"
+  label:
+    en_US: "Stop run"
+    zh_Hans: "停止 run"
+description:
+  human:
+    en_US: "Request a stop for an in-flight run. Before dispatch the run becomes STOPPED and free; once dispatched it settles normally and is charged."
+    zh_Hans: "请求停止一个进行中的 run。派发前停止的 run 变为 STOPPED 且免费；已派发的 run 正常结算并扣费。"
+  llm: "Request a stop for an in-flight run. Before dispatch the run becomes STOPPED and free; once dispatched it settles normally and is charged; paid-for work is never discarded. A run that is already terminal answers 409."
+parameters:
+  - name: run_id
+    type: string
+    required: true
+    label:
+      en_US: "Run id"
+      zh_Hans: "Run id"
+    human_description:
+      en_US: "The id of the run to stop."
+      zh_Hans: "要停止的 run 的 id。"
+    llm_description: "The run id returned by run or runs_list."
+    form: llm
+extra:
+  python:
+    source: tools/runs_stop.py

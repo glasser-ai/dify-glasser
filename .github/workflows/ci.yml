@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync
+      - run: uv run pytest -q
+      - name: Install the Dify plugin CLI
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -fsSL -o "$RUNNER_TEMP/bin/dify" \
+            https://github.com/langgenius/dify-plugin-daemon/releases/latest/download/dify-plugin-linux-amd64
+          chmod +x "$RUNNER_TEMP/bin/dify"
+      - name: Package
+        run: "$RUNNER_TEMP/bin/dify" plugin package . -o glasser.difypkg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: glasser.difypkg
+          path: glasser.difypkg
