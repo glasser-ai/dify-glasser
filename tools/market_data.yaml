@@ -1,0 +1,187 @@
+identity:
+  name: market_data
+  author: glasser-ai
+  label:
+    en_US: Market Data
+    zh_Hans: 市场数据
+    ja_JP: マーケットデータ
+    pt_BR: Dados de mercado
+description:
+  human:
+    en_US: US property values, rent estimates, listings and ZIP-code market statistics, plus stock quotes. Data from RentCast and SerpApi.
+    zh_Hans: 美国房产估值、租金估算、房源与邮编市场统计，以及股票行情。数据来自 RentCast 与 SerpApi。
+    ja_JP: 米国の不動産価値、家賃の推定、物件情報、ZIPコード別の市場統計、および株価。データはRentCastとSerpApiから。
+    pt_BR: Valores de imóveis nos EUA, estimativas de aluguel, anúncios e estatísticas de mercado por CEP, além de cotações de ações. Dados da RentCast e SerpApi.
+  llm: US property value and rent estimates, property records, for-sale and rental listings, ZIP-code market statistics, and a stock quote by symbol. Use this when the user asks about a US address, a local housing market, or a stock price.
+parameters:
+- name: action
+  type: select
+  required: true
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
+  options:
+  - value: property_value
+    label:
+      en_US: Property value estimate
+      zh_Hans: 房产估值
+      ja_JP: 不動産価値の推定
+      pt_BR: Estimativa de valor do imóvel
+  - value: property_rent
+    label:
+      en_US: Rent estimate
+      zh_Hans: 租金估算
+      ja_JP: 家賃の推定
+      pt_BR: Estimativa de aluguel
+  - value: property_search
+    label:
+      en_US: Property records
+      zh_Hans: 房产记录
+      ja_JP: 不動産記録
+      pt_BR: Registros de imóveis
+  - value: listings_sale
+    label:
+      en_US: For-sale listings
+      zh_Hans: 在售房源
+      ja_JP: 売り出し物件
+      pt_BR: Imóveis à venda
+  - value: listings_rental
+    label:
+      en_US: Rental listings
+      zh_Hans: 出租房源
+      ja_JP: 賃貸物件
+      pt_BR: Imóveis para alugar
+  - value: market_stats
+    label:
+      en_US: ZIP market statistics
+      zh_Hans: 邮编市场统计
+      ja_JP: ZIPコード市場統計
+      pt_BR: Estatísticas de mercado por CEP
+  - value: stock_quote
+    label:
+      en_US: Stock quote
+      zh_Hans: 股票行情
+      ja_JP: 株価
+      pt_BR: Cotação de ação
+  llm_description: property_value and property_rent take address. property_search, listings_sale and listings_rental take address, or city plus state, or zip. market_stats takes zip. stock_quote takes symbol.
+  form: llm
+- name: provider
+  type: select
+  required: false
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
+  options:
+  - value: auto
+    label:
+      en_US: Auto (Glasser picks)
+      zh_Hans: 自动（由 Glasser 选择）
+      ja_JP: 自動（Glasserが選択）
+      pt_BR: Automático (Glasser escolhe)
+  - value: rentcast
+    label:
+      en_US: RentCast
+      zh_Hans: RentCast
+      ja_JP: RentCast
+      pt_BR: RentCast
+  - value: serpapi
+    label:
+      en_US: SerpApi
+      zh_Hans: SerpApi
+      ja_JP: SerpApi
+      pt_BR: SerpApi
+  default: auto
+  llm_description: "Data provider: auto (default) or one of rentcast, serpapi. Name one only when the caller asks for that vendor."
+  form: llm
+- name: address
+  type: string
+  required: false
+  label:
+    en_US: Address
+    zh_Hans: 地址
+    ja_JP: 住所
+    pt_BR: Endereço
+  human_description:
+    en_US: "US street address, e.g. '5500 Grand Lake Dr, San Antonio, TX 78244'."
+    zh_Hans: "美国街道地址，如 '5500 Grand Lake Dr, San Antonio, TX 78244'。"
+    ja_JP: "米国の住所（例: '5500 Grand Lake Dr, San Antonio, TX 78244'）。"
+    pt_BR: "Endereço nos EUA, por exemplo '5500 Grand Lake Dr, San Antonio, TX 78244'."
+  llm_description: "US street address, e.g. '5500 Grand Lake Dr, San Antonio, TX 78244'."
+  form: llm
+- name: city
+  type: string
+  required: false
+  label:
+    en_US: City
+    zh_Hans: 城市
+    ja_JP: 市
+    pt_BR: Cidade
+  human_description:
+    en_US: US city name; use with state.
+    zh_Hans: 美国城市名，与 state 一起用。
+    ja_JP: 米国の市名。stateと併用。
+    pt_BR: Nome da cidade nos EUA; use com state.
+  llm_description: US city name; use with state.
+  form: llm
+- name: state
+  type: string
+  required: false
+  label:
+    en_US: State
+    zh_Hans: 州
+    ja_JP: 州
+    pt_BR: Estado
+  human_description:
+    en_US: Two-letter US state code, e.g. TX.
+    zh_Hans: 两位美国州码，如 TX。
+    ja_JP: "2文字の米国州コード（例: TX）。"
+    pt_BR: Código de estado dos EUA com duas letras, por exemplo TX.
+  llm_description: Two-letter US state code, e.g. TX.
+  form: llm
+- name: zip
+  type: string
+  required: false
+  label:
+    en_US: ZIP code
+    zh_Hans: 邮编
+    ja_JP: ZIPコード
+    pt_BR: CEP (ZIP)
+  human_description:
+    en_US: Five-digit US ZIP code.
+    zh_Hans: 五位美国邮编。
+    ja_JP: 5桁の米国ZIPコード。
+    pt_BR: CEP (ZIP) dos EUA com cinco dígitos.
+  llm_description: Five-digit US ZIP code.
+  form: llm
+- name: symbol
+  type: string
+  required: false
+  label:
+    en_US: Symbol
+    zh_Hans: 代码
+    ja_JP: 銘柄コード
+    pt_BR: Símbolo
+  human_description:
+    en_US: "Ticker with exchange, e.g. AAPL:NASDAQ."
+    zh_Hans: "带交易所的股票代码，如 AAPL:NASDAQ。"
+    ja_JP: "取引所付きのティッカー（例: AAPL:NASDAQ）。"
+    pt_BR: "Ticker com bolsa, por exemplo AAPL:NASDAQ."
+  llm_description: "Ticker with exchange, e.g. AAPL:NASDAQ."
+  form: llm
+extra:
+  python:
+    source: tools/market_data.py

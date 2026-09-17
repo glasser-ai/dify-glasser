@@ -16,27 +16,7 @@ description:
 parameters:
 - name: action
   type: select
-  required: true
-  default: search
-  options:
-  - value: search
-    label:
-      en_US: Search people
-      zh_Hans: 搜索人物
-      ja_JP: 人物を検索
-      pt_BR: Buscar pessoas
-  - value: enrich
-    label:
-      en_US: Enrich one person
-      zh_Hans: 补全一个人
-      ja_JP: 1人を補完
-      pt_BR: Enriquecer uma pessoa
-  - value: find_email
-    label:
-      en_US: Find work email
-      zh_Hans: 查找工作邮箱
-      ja_JP: 仕事用メールを検索
-      pt_BR: Encontrar e-mail de trabalho
+  required: false
   label:
     en_US: Action
     zh_Hans: 操作
@@ -47,12 +27,41 @@ parameters:
     zh_Hans: 要做的事；见工具说明。
     ja_JP: 実行内容。ツールの説明を参照。
     pt_BR: O que fazer; veja a descrição da ferramenta.
-  llm_description: "One of: search, enrich, find_email."
+  options:
+  - value: search
+    label:
+      en_US: Search
+      zh_Hans: 搜索
+      ja_JP: 検索
+      pt_BR: Buscar
+  - value: enrich
+    label:
+      en_US: Enrich
+      zh_Hans: 补全
+      ja_JP: 補完
+      pt_BR: Enriquecer
+  - value: find_email
+    label:
+      en_US: Find work email
+      zh_Hans: 查找工作邮箱
+      ja_JP: 仕事用メールを検索
+      pt_BR: Encontrar e-mail de trabalho
+  default: search
+  llm_description: "Default search. search: people matching job_titles, seniorities, locations, company_domain or keywords (at least one); a filter is never silently dropped — under auto a Provider that cannot apply one of the given filters is skipped, a named Provider that cannot is refused with 400. enrich: one person from linkedin_url, email, or full_name plus company_domain. find_email: the work email of full_name at company_domain."
   form: llm
 - name: provider
   type: select
   required: false
-  default: auto
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
   options:
   - value: auto
     label:
@@ -96,17 +105,8 @@ parameters:
       zh_Hans: Prospeo
       ja_JP: Prospeo
       pt_BR: Prospeo
-  label:
-    en_US: Provider
-    zh_Hans: 数据来源
-    ja_JP: プロバイダー
-    pt_BR: Provider
-  human_description:
-    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
-    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
-    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
-    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
-  llm_description: "Data provider: auto (default, recommended) or one of apollo, pdl, leadmagic, zoominfo, hunter, prospeo. Name one only when the user asks for that vendor."
+  default: auto
+  llm_description: "Data provider: auto (default) or one of apollo, pdl, leadmagic, zoominfo, hunter, prospeo. Name one only when the caller asks for that vendor."
   form: llm
 - name: job_titles
   type: string
@@ -117,11 +117,11 @@ parameters:
     ja_JP: 役職
     pt_BR: Cargos
   human_description:
-    en_US: "Comma-separated job titles, e.g. 'CTO, VP Engineering'."
-    zh_Hans: "职位列表，逗号分隔，如 'CTO, VP Engineering'。"
-    ja_JP: "役職のカンマ区切りリスト（例: 'CTO, VP Engineering'）。"
-    pt_BR: "Cargos separados por vírgula, por exemplo 'CTO, VP Engineering'."
-  llm_description: "Comma-separated job titles, e.g. 'CTO, VP Engineering'."
+    en_US: "Job titles, e.g. 'CTO, VP Engineering'. Comma-separated, up to 20."
+    zh_Hans: "职位，如 'CTO, VP Engineering'。逗号分隔，最多 20 个。"
+    ja_JP: "役職（例: 'CTO, VP Engineering'）。カンマ区切り、最大20件。"
+    pt_BR: "Cargos, por exemplo 'CTO, VP Engineering'. Separado por vírgula, até 20."
+  llm_description: "Job titles, e.g. 'CTO, VP Engineering'. Comma-separated, up to 20."
   form: llm
 - name: seniorities
   type: string
@@ -132,11 +132,11 @@ parameters:
     ja_JP: 役職レベル
     pt_BR: Senioridades
   human_description:
-    en_US: "Comma-separated seniority levels, e.g. 'c_suite, vp, director' (search with apollo)."
-    zh_Hans: "级别列表，逗号分隔，如 'c_suite, vp, director'（apollo 的 search 用）。"
-    ja_JP: "役職レベルのカンマ区切り（例: 'c_suite, vp, director'、apolloのsearch用）。"
-    pt_BR: "Níveis de senioridade separados por vírgula, por exemplo 'c_suite, vp, director' (search com apollo)."
-  llm_description: "Comma-separated seniority levels, e.g. 'c_suite, vp, director' (search with apollo)."
+    en_US: "Seniority levels, e.g. 'c_suite, vp, director'. Comma-separated, up to 11."
+    zh_Hans: "级别，如 'c_suite, vp, director'。逗号分隔，最多 11 个。"
+    ja_JP: "役職レベル（例: 'c_suite, vp, director'）。カンマ区切り、最大11件。"
+    pt_BR: "Níveis de senioridade, por exemplo 'c_suite, vp, director'. Separado por vírgula, até 11."
+  llm_description: Seniority levels, one or more of owner, founder, c_suite, partner, vp, head, director, manager, senior, entry, intern. Comma-separated, up to 11.
   form: llm
 - name: locations
   type: string
@@ -147,11 +147,11 @@ parameters:
     ja_JP: 所在地
     pt_BR: Localizações
   human_description:
-    en_US: Comma-separated cities, states or countries.
-    zh_Hans: 城市、州或国家，逗号分隔。
-    ja_JP: 都市、州、国のカンマ区切り。
-    pt_BR: Cidades, estados ou países separados por vírgula.
-  llm_description: Comma-separated cities, states or countries.
+    en_US: Cities, states or countries. Comma-separated, up to 20.
+    zh_Hans: 城市、州或国家。逗号分隔，最多 20 个。
+    ja_JP: 都市、州、国。カンマ区切り、最大20件。
+    pt_BR: Cidades, estados ou países. Separado por vírgula, até 20.
+  llm_description: Cities, states or countries. Comma-separated, up to 20.
   form: llm
 - name: company_domain
   type: string
@@ -166,37 +166,7 @@ parameters:
     zh_Hans: 雇主的网站域名，如 stripe.com。
     ja_JP: "雇用主のサイトのドメイン（例: stripe.com）。"
     pt_BR: O domínio do site do empregador, por exemplo stripe.com.
-  llm_description: "The employer's website domain, e.g. stripe.com."
-  form: llm
-- name: company_name
-  type: string
-  required: false
-  label:
-    en_US: Company name
-    zh_Hans: 公司名称
-    ja_JP: 企業名
-    pt_BR: Nome da empresa
-  human_description:
-    en_US: "The employer's name, when the domain is unknown."
-    zh_Hans: 雇主名称，域名未知时使用。
-    ja_JP: 雇用主の名前（ドメイン不明時）。
-    pt_BR: O nome do empregador, quando o domínio é desconhecido.
-  llm_description: "The employer's name, when the domain is unknown."
-  form: llm
-- name: keywords
-  type: string
-  required: false
-  label:
-    en_US: Keywords
-    zh_Hans: 关键词
-    ja_JP: キーワード
-    pt_BR: Palavras-chave
-  human_description:
-    en_US: Free-text keywords for people search (apollo).
-    zh_Hans: 人物搜索的自由关键词（apollo）。
-    ja_JP: 人物検索の自由キーワード（apollo）。
-    pt_BR: Palavras-chave livres para busca de pessoas (apollo).
-  llm_description: Free-text keywords for people search (apollo).
+  llm_description: A website domain such as stripe.com. A full URL is accepted and reduced to its host.
   form: llm
 - name: full_name
   type: string
@@ -226,7 +196,7 @@ parameters:
     zh_Hans: 人物的邮箱地址。
     ja_JP: 人物のメールアドレス。
     pt_BR: O endereço de e-mail da pessoa.
-  llm_description: "The person's email address."
+  llm_description: An email address.
   form: llm
 - name: linkedin_url
   type: string
@@ -241,24 +211,8 @@ parameters:
     zh_Hans: 人物的 LinkedIn 个人主页链接。
     ja_JP: 人物のLinkedInプロフィールURL。
     pt_BR: A URL do perfil do LinkedIn da pessoa.
-  llm_description: "The person's LinkedIn profile URL."
+  llm_description: "The person's LinkedIn profile URL, linkedin.com/in/<slug>. Not a company page."
   form: llm
-- name: limit
-  type: number
-  required: false
-  label:
-    en_US: Limit
-    zh_Hans: 数量
-    ja_JP: 件数
-    pt_BR: Limite
-  human_description:
-    en_US: "How many rows to return. Keep it small: the charge may depend on it."
-    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
-    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
-    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
-  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
-  form: llm
-  min: 1
 extra:
   python:
     source: tools/people_search.py

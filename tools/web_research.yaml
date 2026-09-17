@@ -16,27 +16,30 @@ description:
 parameters:
 - name: action
   type: select
-  required: true
-  default: search
+  required: false
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
   options:
   - value: search
     label:
-      en_US: Web search
-      zh_Hans: 网页搜索
-      ja_JP: ウェブ検索
-      pt_BR: Busca na web
+      en_US: Search
+      zh_Hans: 搜索
+      ja_JP: 検索
+      pt_BR: Buscar
   - value: news
     label:
-      en_US: News search
-      zh_Hans: 新闻搜索
-      ja_JP: ニュース検索
-      pt_BR: Busca de notícias
-  - value: scrape
-    label:
-      en_US: Read a web page
-      zh_Hans: 读取网页
-      ja_JP: ウェブページを読む
-      pt_BR: Ler uma página web
+      en_US: News
+      zh_Hans: 新闻
+      ja_JP: ニュース
+      pt_BR: Notícias
   - value: places
     label:
       en_US: Places / local businesses
@@ -73,28 +76,34 @@ parameters:
       zh_Hans: 从网页回答问题
       ja_JP: ウェブから質問に回答
       pt_BR: Responder uma pergunta a partir da web
+  - value: scrape
+    label:
+      en_US: Read a web page
+      zh_Hans: 读取网页
+      ja_JP: ウェブページを読む
+      pt_BR: Ler uma página web
   - value: similar
     label:
       en_US: Pages similar to a URL
       zh_Hans: 与 URL 相似的页面
       ja_JP: URLに類似したページ
       pt_BR: Páginas semelhantes a uma URL
-  label:
-    en_US: Action
-    zh_Hans: 操作
-    ja_JP: アクション
-    pt_BR: Ação
-  human_description:
-    en_US: What to do; see the tool description.
-    zh_Hans: 要做的事；见工具说明。
-    ja_JP: 実行内容。ツールの説明を参照。
-    pt_BR: O que fazer; veja a descrição da ferramenta.
-  llm_description: "One of: search, news, scrape, places, scholar, shopping, images, videos, answer, similar."
+  default: search
+  llm_description: Default search. search, news, places, scholar, shopping, images, videos and answer take query; scrape and similar take url.
   form: llm
 - name: provider
   type: select
   required: false
-  default: auto
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
   options:
   - value: auto
     label:
@@ -126,17 +135,8 @@ parameters:
       zh_Hans: DataForSEO
       ja_JP: DataForSEO
       pt_BR: DataForSEO
-  label:
-    en_US: Provider
-    zh_Hans: 数据来源
-    ja_JP: プロバイダー
-    pt_BR: Provider
-  human_description:
-    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
-    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
-    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
-    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
-  llm_description: "Data provider: auto (default, recommended) or one of serper, serpapi, exa, dataforseo. Name one only when the user asks for that vendor."
+  default: auto
+  llm_description: "Data provider: auto (default) or one of serper, serpapi, exa, dataforseo. Name one only when the caller asks for that vendor."
   form: llm
 - name: query
   type: string
@@ -177,43 +177,12 @@ parameters:
     ja_JP: 国
     pt_BR: País
   human_description:
-    en_US: Two-letter country code, e.g. us, gb, de (default us).
-    zh_Hans: 两位国家代码，如 us、gb、de（默认 us）。
-    ja_JP: "2文字の国コード（例: us, gb, de、デフォルトus）。"
-    pt_BR: Código de país de duas letras, por exemplo us, gb, de (padrão us).
-  llm_description: Two-letter country code, e.g. us, gb, de (default us).
+    en_US: Two-letter country code or country name, e.g. us, gb, Germany (default us).
+    zh_Hans: 两位国家代码或国家名，如 us、gb、Germany（默认 us）。
+    ja_JP: "2文字の国コードまたは国名（例: us, gb, Germany、デフォルトus）。"
+    pt_BR: Código de país de duas letras ou nome do país, por exemplo us, gb, Germany (padrão us).
+  llm_description: Country for search-type actions, as a two-letter ISO code or a country name. Default us. Not for scrape or similar. Refused with 400 when the named provider cannot apply it.
   form: llm
-- name: language
-  type: string
-  required: false
-  label:
-    en_US: Language
-    zh_Hans: 语言
-    ja_JP: 言語
-    pt_BR: Idioma
-  human_description:
-    en_US: Two-letter language code for the results, e.g. en, de.
-    zh_Hans: 结果语言的两位代码，如 en、de。
-    ja_JP: "結果の言語コード（例: en, de）。"
-    pt_BR: Código de idioma de duas letras para os resultados, por exemplo en, de.
-  llm_description: Two-letter language code for the results, e.g. en, de.
-  form: llm
-- name: limit
-  type: number
-  required: false
-  label:
-    en_US: Limit
-    zh_Hans: 数量
-    ja_JP: 件数
-    pt_BR: Limite
-  human_description:
-    en_US: "How many rows to return. Keep it small: the charge may depend on it."
-    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
-    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
-    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
-  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
-  form: llm
-  min: 1
 extra:
   python:
     source: tools/web_research.py

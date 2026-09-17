@@ -165,46 +165,30 @@ class GlasserClient:
     # ------------------------------------------------------------ operations
 
     def balance(self) -> dict[str, Any]:
+        """GET /v1/balance: the free probe the provider uses to validate a Key."""
         return self.request("GET", "/v1/balance")[1]
 
-    def search(
-        self, query: Optional[str], limit: Optional[int], cursor: Optional[str]
-    ) -> dict[str, Any]:
-        body = _clean({"query": query, "limit": limit, "cursor": cursor})
-        return self.request("POST", "/v1/endpoints/search", body=body)[1]
-
-    def inspect(
-        self, provider: str, endpoint: str, endpoint_version: Optional[int]
-    ) -> dict[str, Any]:
-        body = _clean({"provider": provider, "endpoint": endpoint, "endpoint_version": endpoint_version})
-        return self.request("POST", "/v1/endpoints/inspect", body=body)[1]
-
-    def create_run(
+    def solution_run(
         self,
-        provider: str,
-        endpoint: str,
-        run_input: dict[str, Any],
-        endpoint_version: Optional[int],
+        solution: str,
+        capability: str,
+        body: dict[str, Any],
         idempotency_key: str,
         timeout: float,
     ) -> tuple[int, dict[str, Any]]:
-        """POST /v1/runs. 200 carries a terminal run, 202 an in-flight one.
+        """POST /v1/solutions/<solution>/<capability>. The answer is a run,
+        the same object POST /v1/runs returns: 200 terminal, 202 in flight.
 
-        The transport retry inside ``request`` reuses the same
-        Idempotency-Key, so a retry after a dropped connection is a read of
-        the original run, never a second charge.
+        The API picks the endpoint (or follows ``provider``), translates the
+        flat fields and falls back on provider errors. The transport retry
+        inside ``request`` reuses the same Idempotency-Key, so a retry after
+        a dropped connection is a read of the original run, never a second
+        charge.
         """
-        body = _clean(
-            {
-                "provider": provider,
-                "endpoint": endpoint,
-                "input": run_input,
-                "endpoint_version": endpoint_version,
-            }
-        )
+        path = f"/v1/solutions/{urllib.parse.quote(solution, safe='')}/{urllib.parse.quote(capability, safe='')}"
         return self.request(
             "POST",
-            "/v1/runs",
+            path,
             body=body,
             headers={"Idempotency-Key": idempotency_key},
             timeout=timeout,
@@ -213,35 +197,8 @@ class GlasserClient:
     def get_run(self, run_id: str) -> dict[str, Any]:
         return self.request("GET", f"/v1/runs/{urllib.parse.quote(run_id, safe='')}")[1]
 
-    def list_runs(
-        self,
-        limit: Optional[int],
-        cursor: Optional[str],
-        status: Optional[str],
-        provider: Optional[str],
-        endpoint: Optional[str],
-    ) -> dict[str, Any]:
-        query = {
-            "limit": limit,
-            "cursor": cursor,
-            "status": status,
-            "provider": provider,
-            "endpoint": endpoint,
-        }
-        return self.request("GET", "/v1/runs", query=query)[1]
-
-    def stop_run(self, run_id: str) -> dict[str, Any]:
-        # No transport retry: a second stop of a run that just stopped is a
-        # 409 by contract, which would hide the success of the first.
-        return self.request(
-            "POST",
-            f"/v1/runs/{urllib.parse.quote(run_id, safe='')}/stop",
-            body={},
-            retry_transport=False,
-        )[1]
-
     def wait_run(self, run: dict[str, Any], budget_s: float, poll_s: float = 2.0) -> dict[str, Any]:
-        """Poll runs_get until the run is terminal or the budget is spent."""
+        """Poll GET /v1/runs/{id} until the run is terminal or the budget is spent."""
         deadline = time.monotonic() + budget_s
         while run.get("status") not in TERMINAL_STATUSES and time.monotonic() < deadline:
             time.sleep(min(poll_s, max(0.0, deadline - time.monotonic())))

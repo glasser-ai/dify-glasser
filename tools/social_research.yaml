@@ -14,99 +14,118 @@ description:
     pt_BR: Pesquise posts, perfis e canais no Reddit, X, YouTube, TikTok, Instagram e LinkedIn, somente leitura. Dados da ScrapeCreators.
   llm: Search posts, profiles and channels on Reddit, X, YouTube, TikTok, Instagram and LinkedIn. Use this when the user asks what people say on social media or about a social account.
 parameters:
-- name: action
+- name: platform
   type: select
   required: true
-  default: reddit_search
+  label:
+    en_US: Platform
+    zh_Hans: 平台
+    ja_JP: プラットフォーム
+    pt_BR: Plataforma
+  human_description:
+    en_US: The social network to search.
+    zh_Hans: 要搜索的社交平台。
+    ja_JP: 検索するSNS。
+    pt_BR: A rede social a pesquisar.
   options:
-  - value: reddit_search
+  - value: reddit
     label:
-      en_US: Reddit search
-      zh_Hans: Reddit 搜索
-      ja_JP: Reddit検索
-      pt_BR: Busca no Reddit
-  - value: reddit_subreddit
+      en_US: Reddit
+      zh_Hans: Reddit
+      ja_JP: Reddit
+      pt_BR: Reddit
+  - value: x
     label:
-      en_US: Subreddit posts
-      zh_Hans: Subreddit 帖子
-      ja_JP: Subredditの投稿
-      pt_BR: Posts de um subreddit
-  - value: x_user_tweets
+      en_US: X
+      zh_Hans: X
+      ja_JP: X
+      pt_BR: X
+  - value: youtube
     label:
-      en_US: "X user's tweets"
-      zh_Hans: X 用户推文
-      ja_JP: Xユーザーの投稿
-      pt_BR: Tweets de um usuário do X
-  - value: x_tweet
+      en_US: YouTube
+      zh_Hans: YouTube
+      ja_JP: YouTube
+      pt_BR: YouTube
+  - value: tiktok
     label:
-      en_US: X tweet details
-      zh_Hans: X 推文详情
-      ja_JP: X投稿の詳細
-      pt_BR: Detalhes de um tweet do X
-  - value: youtube_search
+      en_US: TikTok
+      zh_Hans: TikTok
+      ja_JP: TikTok
+      pt_BR: TikTok
+  - value: instagram
     label:
-      en_US: YouTube search
-      zh_Hans: YouTube 搜索
-      ja_JP: YouTube検索
-      pt_BR: Busca no YouTube
-  - value: youtube_channel
+      en_US: Instagram
+      zh_Hans: Instagram
+      ja_JP: Instagram
+      pt_BR: Instagram
+  - value: linkedin
     label:
-      en_US: YouTube channel videos
-      zh_Hans: YouTube 频道视频
-      ja_JP: YouTubeチャンネルの動画
-      pt_BR: Vídeos de um canal do YouTube
-  - value: tiktok_search
+      en_US: LinkedIn
+      zh_Hans: LinkedIn
+      ja_JP: LinkedIn
+      pt_BR: LinkedIn
+  llm_description: "One of: reddit, x, youtube, tiktok, instagram, linkedin."
+  form: llm
+- name: mode
+  type: select
+  required: false
+  label:
+    en_US: Mode
+    zh_Hans: 模式
+    ja_JP: モード
+    pt_BR: Modo
+  human_description:
+    en_US: What to fetch; see the tool description.
+    zh_Hans: 要获取的内容；见工具说明。
+    ja_JP: 取得する内容。ツールの説明を参照。
+    pt_BR: O que buscar; veja a descrição da ferramenta.
+  options:
+  - value: search
     label:
-      en_US: TikTok search
-      zh_Hans: TikTok 搜索
-      ja_JP: TikTok検索
-      pt_BR: Busca no TikTok
-  - value: instagram_profile
+      en_US: Search
+      zh_Hans: 搜索
+      ja_JP: 検索
+      pt_BR: Buscar
+  - value: profile
     label:
-      en_US: Instagram profile
-      zh_Hans: Instagram 主页
-      ja_JP: Instagramプロフィール
-      pt_BR: Perfil do Instagram
-  - value: linkedin_posts
+      en_US: Profile or channel
+      zh_Hans: 主页或频道
+      ja_JP: プロフィール/チャンネル
+      pt_BR: Perfil ou canal
+  - value: feed
     label:
-      en_US: LinkedIn posts search
-      zh_Hans: LinkedIn 帖子搜索
-      ja_JP: LinkedIn投稿検索
-      pt_BR: Busca de posts no LinkedIn
-  - value: linkedin_profile
+      en_US: Recent posts
+      zh_Hans: 最近帖子
+      ja_JP: 最近の投稿
+      pt_BR: Posts recentes
+  - value: post
     label:
-      en_US: LinkedIn profile
-      zh_Hans: LinkedIn 个人主页
-      ja_JP: LinkedInプロフィール
-      pt_BR: Perfil do LinkedIn
-  - value: linkedin_company
-    label:
-      en_US: LinkedIn company page
-      zh_Hans: LinkedIn 公司主页
-      ja_JP: LinkedIn企業ページ
-      pt_BR: Página de empresa no LinkedIn
-  - value: find_profiles
+      en_US: One post
+      zh_Hans: 单条帖子
+      ja_JP: 1件の投稿
+      pt_BR: Um post
+  - value: find
     label:
       en_US: Find social profiles
       zh_Hans: 查找社交账号
       ja_JP: SNSプロフィールを検索
       pt_BR: Encontrar perfis sociais
-  label:
-    en_US: Action
-    zh_Hans: 操作
-    ja_JP: アクション
-    pt_BR: Ação
-  human_description:
-    en_US: What to do; see the tool description.
-    zh_Hans: 要做的事；见工具说明。
-    ja_JP: 実行内容。ツールの説明を参照。
-    pt_BR: O que fazer; veja a descrição da ferramenta.
-  llm_description: "One of: reddit_search, reddit_subreddit, x_user_tweets, x_tweet, youtube_search, youtube_channel, tiktok_search, instagram_profile, linkedin_posts, linkedin_profile, linkedin_company, find_profiles."
+  default: search
+  llm_description: "Default search. search: posts matching query. profile: the account itself — bio, follower counts, links — from handle (reddit: the subreddit; linkedin: url of a person's profile or a company page). feed: the account's recent posts or videos, from handle (linkedin: url of a company page). post: one post or video from url. find: an account's other social profiles, from handle."
   form: llm
 - name: provider
   type: select
   required: false
-  default: auto
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
   options:
   - value: auto
     label:
@@ -132,17 +151,8 @@ parameters:
       zh_Hans: TikHub
       ja_JP: TikHub
       pt_BR: TikHub
-  label:
-    en_US: Provider
-    zh_Hans: 数据来源
-    ja_JP: プロバイダー
-    pt_BR: Provider
-  human_description:
-    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
-    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
-    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
-    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
-  llm_description: "Data provider: auto (default, recommended) or one of scrapecreators, apify, tikhub. Name one only when the user asks for that vendor."
+  default: auto
+  llm_description: "Data provider: auto (default) or one of scrapecreators, apify, tikhub. Name one only when the caller asks for that vendor."
   form: llm
 - name: query
   type: string
@@ -172,7 +182,7 @@ parameters:
     zh_Hans: 用户名或账号（不带 @），或 subreddit 名称。
     ja_JP: '@なしのユーザー名またはハンドル、あるいはsubreddit名。'
     pt_BR: Um nome de usuário ou handle sem @, ou o nome de um subreddit.
-  llm_description: A username or handle without @, or a subreddit name.
+  llm_description: A username without @, or a subreddit name without r/.
   form: llm
 - name: url
   type: string
@@ -189,37 +199,6 @@ parameters:
     pt_BR: Uma URL http(s) completa.
   llm_description: A full http(s) URL.
   form: llm
-- name: platform
-  type: string
-  required: false
-  label:
-    en_US: Platform
-    zh_Hans: 平台
-    ja_JP: プラットフォーム
-    pt_BR: Plataforma
-  human_description:
-    en_US: "For find_profiles: instagram, tiktok, youtube, x, twitter or facebook."
-    zh_Hans: find_profiles 用：instagram、tiktok、youtube、x、twitter 或 facebook。
-    ja_JP: "find_profiles用: instagram, tiktok, youtube, x, twitter, facebook。"
-    pt_BR: "Para find_profiles: instagram, tiktok, youtube, x, twitter ou facebook."
-  llm_description: "For find_profiles: instagram, tiktok, youtube, x, twitter or facebook."
-  form: llm
-- name: limit
-  type: number
-  required: false
-  label:
-    en_US: Limit
-    zh_Hans: 数量
-    ja_JP: 件数
-    pt_BR: Limite
-  human_description:
-    en_US: "How many rows to return. Keep it small: the charge may depend on it."
-    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
-    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
-    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
-  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
-  form: llm
-  min: 1
 extra:
   python:
     source: tools/social_research.py

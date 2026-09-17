@@ -16,8 +16,17 @@ description:
 parameters:
 - name: action
   type: select
-  required: true
-  default: keyword_overview
+  required: false
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
   options:
   - value: keyword_overview
     label:
@@ -31,6 +40,12 @@ parameters:
       zh_Hans: 关键词拓展
       ja_JP: キーワード候補
       pt_BR: Ideias de palavras-chave
+  - value: serp
+    label:
+      en_US: Google results for a keyword
+      zh_Hans: 关键词的 Google 结果
+      ja_JP: キーワードのGoogle結果
+      pt_BR: Resultados do Google para uma palavra-chave
   - value: domain_overview
     label:
       en_US: Domain organic overview
@@ -43,6 +58,12 @@ parameters:
       zh_Hans: 域名排名关键词
       ja_JP: ドメインのランキングキーワード
       pt_BR: Palavras-chave em que o domínio rankeia
+  - value: organic_competitors
+    label:
+      en_US: Organic search competitors
+      zh_Hans: 自然搜索竞争对手
+      ja_JP: オーガニック検索の競合
+      pt_BR: Concorrentes na busca orgânica
   - value: backlinks_overview
     label:
       en_US: Backlink totals
@@ -67,28 +88,22 @@ parameters:
       zh_Hans: 域名评分
       ja_JP: ドメインレーティング
       pt_BR: Domain Rating
-  - value: serp
-    label:
-      en_US: Google results for a keyword
-      zh_Hans: 关键词的 Google 结果
-      ja_JP: キーワードのGoogle結果
-      pt_BR: Resultados do Google para uma palavra-chave
-  label:
-    en_US: Action
-    zh_Hans: 操作
-    ja_JP: アクション
-    pt_BR: Ação
-  human_description:
-    en_US: What to do; see the tool description.
-    zh_Hans: 要做的事；见工具说明。
-    ja_JP: 実行内容。ツールの説明を参照。
-    pt_BR: O que fazer; veja a descrição da ferramenta.
-  llm_description: "One of: keyword_overview, keyword_ideas, domain_overview, ranked_keywords, backlinks_overview, backlinks, referring_domains, domain_rating, serp."
+  default: keyword_overview
+  llm_description: Default keyword_overview. keyword_overview takes keywords (several at once); keyword_ideas and serp take exactly one keyword in keywords; domain_overview, ranked_keywords, organic_competitors (domains ranking for the same keywords), backlinks_overview, backlinks, referring_domains and domain_rating take domain.
   form: llm
 - name: provider
   type: select
   required: false
-  default: auto
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
   options:
   - value: auto
     label:
@@ -126,17 +141,8 @@ parameters:
       zh_Hans: Serper
       ja_JP: Serper
       pt_BR: Serper
-  label:
-    en_US: Provider
-    zh_Hans: 数据来源
-    ja_JP: プロバイダー
-    pt_BR: Provider
-  human_description:
-    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
-    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
-    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
-    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
-  llm_description: "Data provider: auto (default, recommended) or one of semrush, serpstat, dataforseo, ahrefs, serper. Name one only when the user asks for that vendor."
+  default: auto
+  llm_description: "Data provider: auto (default) or one of semrush, serpstat, dataforseo, ahrefs, serper. Name one only when the caller asks for that vendor."
   form: llm
 - name: keywords
   type: string
@@ -147,11 +153,11 @@ parameters:
     ja_JP: キーワード
     pt_BR: Palavras-chave
   human_description:
-    en_US: One or more keywords, comma-separated.
-    zh_Hans: 一个或多个关键词，逗号分隔。
-    ja_JP: 1つ以上のキーワード、カンマ区切り。
-    pt_BR: Uma ou mais palavras-chave, separadas por vírgula.
-  llm_description: One or more keywords, comma-separated.
+    en_US: "Keywords to look up, e.g. 'espresso machine'. Comma-separated, up to 20."
+    zh_Hans: "要查的关键词，如 'espresso machine'。逗号分隔，最多 20 个。"
+    ja_JP: "調べるキーワード（例: 'espresso machine'）。カンマ区切り、最大20件。"
+    pt_BR: "Palavras-chave a consultar, por exemplo 'espresso machine'. Separado por vírgula, até 20."
+  llm_description: "Keywords to look up, e.g. 'espresso machine'. Comma-separated, up to 20."
   form: llm
 - name: domain
   type: string
@@ -166,7 +172,7 @@ parameters:
     zh_Hans: 公司网站域名，如 stripe.com。
     ja_JP: "企業サイトのドメイン（例: stripe.com）。"
     pt_BR: O domínio do site da empresa, por exemplo stripe.com.
-  llm_description: A company website domain, e.g. stripe.com.
+  llm_description: A website domain such as stripe.com. A full URL is accepted and reduced to its host.
   form: llm
 - name: country
   type: string
@@ -177,28 +183,12 @@ parameters:
     ja_JP: 国
     pt_BR: País
   human_description:
-    en_US: Two-letter country code, e.g. us, gb, de (default us).
-    zh_Hans: 两位国家代码，如 us、gb、de（默认 us）。
-    ja_JP: "2文字の国コード（例: us, gb, de、デフォルトus）。"
-    pt_BR: Código de país de duas letras, por exemplo us, gb, de (padrão us).
-  llm_description: Two-letter country code, e.g. us, gb, de (default us).
+    en_US: Two-letter country code or country name, e.g. us, gb, Germany (default us).
+    zh_Hans: 两位国家代码或国家名，如 us、gb、Germany（默认 us）。
+    ja_JP: "2文字の国コードまたは国名（例: us, gb, Germany、デフォルトus）。"
+    pt_BR: Código de país de duas letras ou nome do país, por exemplo us, gb, Germany (padrão us).
+  llm_description: Country as a two-letter ISO code or a country name, e.g. us, gb, de, Germany. Default us. An unsupported country is refused with the supported list.
   form: llm
-- name: limit
-  type: number
-  required: false
-  label:
-    en_US: Limit
-    zh_Hans: 数量
-    ja_JP: 件数
-    pt_BR: Limite
-  human_description:
-    en_US: "How many rows to return. Keep it small: the charge may depend on it."
-    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
-    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
-    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
-  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
-  form: llm
-  min: 1
 extra:
   python:
     source: tools/seo_research.py
