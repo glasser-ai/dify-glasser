@@ -1,12 +1,17 @@
-# On a GitHub release: package the plugin, push the .difypkg to the
-# glasser-ai fork of langgenius/dify-plugins, and open the Marketplace PR.
-# Needs the repository secret PLUGIN_ACTION: a token with write access to
-# the fork (glasser-ai/dify-plugins) and permission to open PRs upstream.
+# On a GitHub release: package the plugin, push the .difypkg to the personal
+# fork of langgenius/dify-plugins (FORK_OWNER), and open the Marketplace PR.
+# The organisation holds only source; the fork is a PR vehicle and lives
+# under the account that submits. Needs the repository secret PLUGIN_ACTION:
+# a token of FORK_OWNER with write access to the fork and permission to open
+# PRs upstream.
 name: Publish to Dify Marketplace
 
 on:
   release:
     types: [published]
+
+env:
+  FORK_OWNER: adriansurething
 
 jobs:
   publish:
@@ -38,7 +43,7 @@ jobs:
       - name: Checkout the Marketplace fork
         uses: actions/checkout@v4
         with:
-          repository: ${{ steps.manifest.outputs.author }}/dify-plugins
+          repository: ${{ env.FORK_OWNER }}/dify-plugins
           path: dify-plugins
           token: ${{ secrets.PLUGIN_ACTION }}
           fetch-depth: 1
@@ -63,7 +68,7 @@ jobs:
         run: |
           gh pr create \
             --repo langgenius/dify-plugins \
-            --head "${{ steps.manifest.outputs.author }}:${{ steps.manifest.outputs.name }}-${{ steps.manifest.outputs.version }}" \
+            --head "${{ env.FORK_OWNER }}:${{ steps.manifest.outputs.name }}-${{ steps.manifest.outputs.version }}" \
             --base main \
             --title "Update plugin: ${{ steps.manifest.outputs.author }}/${{ steps.manifest.outputs.name }} v${{ steps.manifest.outputs.version }}" \
             --body-file .github/MARKETPLACE_PR_BODY.md \
