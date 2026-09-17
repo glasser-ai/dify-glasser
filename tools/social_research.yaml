@@ -1,0 +1,225 @@
+identity:
+  name: social_research
+  author: glasser-ai
+  label:
+    en_US: Social Research
+    zh_Hans: 社交研究
+    ja_JP: ソーシャルリサーチ
+    pt_BR: Pesquisa social
+description:
+  human:
+    en_US: "Reddit, X, YouTube, TikTok, Instagram and LinkedIn: search posts, read a profile or channel, find someone's social accounts. ScrapeCreators, Apify and TikHub behind one Key."
+    zh_Hans: Reddit、X、YouTube、TikTok、Instagram、LinkedIn：搜索帖子、读取主页或频道、查找某人的社交账号。一个 Key 背后是 ScrapeCreators、Apify、TikHub。
+    ja_JP: "Reddit、X、YouTube、TikTok、Instagram、LinkedIn: 投稿の検索、プロフィールやチャンネルの取得、SNSアカウントの検索。ScrapeCreators、Apify、TikHubを1つのKeyで。"
+    pt_BR: "Reddit, X, YouTube, TikTok, Instagram e LinkedIn: buscar posts, ler um perfil ou canal, encontrar as contas sociais de alguém. ScrapeCreators, Apify e TikHub com uma única Key."
+  llm: "Public social data, read-only. Query actions take query: 'reddit_search', 'youtube_search', 'tiktok_search', 'linkedin_posts'. Handle actions take handle (no @; a subreddit name for reddit_subreddit): 'reddit_subreddit', 'x_user_tweets', 'youtube_channel', 'instagram_profile', 'find_profiles' (also needs platform). URL actions take url: 'x_tweet', 'linkedin_profile', 'linkedin_company'. provider 'auto' is scrapecreators (about $0.002 per call, sync); apify alternatives are async and priced per result. Each call is one paid run; report the charge and the run URL."
+parameters:
+- name: action
+  type: select
+  required: true
+  default: reddit_search
+  options:
+  - value: reddit_search
+    label:
+      en_US: Reddit search
+      zh_Hans: Reddit 搜索
+      ja_JP: Reddit検索
+      pt_BR: Busca no Reddit
+  - value: reddit_subreddit
+    label:
+      en_US: Subreddit posts
+      zh_Hans: Subreddit 帖子
+      ja_JP: Subredditの投稿
+      pt_BR: Posts de um subreddit
+  - value: x_user_tweets
+    label:
+      en_US: "X user's tweets"
+      zh_Hans: X 用户推文
+      ja_JP: Xユーザーの投稿
+      pt_BR: Tweets de um usuário do X
+  - value: x_tweet
+    label:
+      en_US: X tweet details
+      zh_Hans: X 推文详情
+      ja_JP: X投稿の詳細
+      pt_BR: Detalhes de um tweet do X
+  - value: youtube_search
+    label:
+      en_US: YouTube search
+      zh_Hans: YouTube 搜索
+      ja_JP: YouTube検索
+      pt_BR: Busca no YouTube
+  - value: youtube_channel
+    label:
+      en_US: YouTube channel videos
+      zh_Hans: YouTube 频道视频
+      ja_JP: YouTubeチャンネルの動画
+      pt_BR: Vídeos de um canal do YouTube
+  - value: tiktok_search
+    label:
+      en_US: TikTok search
+      zh_Hans: TikTok 搜索
+      ja_JP: TikTok検索
+      pt_BR: Busca no TikTok
+  - value: instagram_profile
+    label:
+      en_US: Instagram profile
+      zh_Hans: Instagram 主页
+      ja_JP: Instagramプロフィール
+      pt_BR: Perfil do Instagram
+  - value: linkedin_posts
+    label:
+      en_US: LinkedIn posts search
+      zh_Hans: LinkedIn 帖子搜索
+      ja_JP: LinkedIn投稿検索
+      pt_BR: Busca de posts no LinkedIn
+  - value: linkedin_profile
+    label:
+      en_US: LinkedIn profile
+      zh_Hans: LinkedIn 个人主页
+      ja_JP: LinkedInプロフィール
+      pt_BR: Perfil do LinkedIn
+  - value: linkedin_company
+    label:
+      en_US: LinkedIn company page
+      zh_Hans: LinkedIn 公司主页
+      ja_JP: LinkedIn企業ページ
+      pt_BR: Página de empresa no LinkedIn
+  - value: find_profiles
+    label:
+      en_US: Find social profiles
+      zh_Hans: 查找社交账号
+      ja_JP: SNSプロフィールを検索
+      pt_BR: Encontrar perfis sociais
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
+  llm_description: "One of: reddit_search, reddit_subreddit, x_user_tweets, x_tweet, youtube_search, youtube_channel, tiktok_search, instagram_profile, linkedin_posts, linkedin_profile, linkedin_company, find_profiles."
+  form: llm
+- name: provider
+  type: select
+  required: false
+  default: auto
+  options:
+  - value: auto
+    label:
+      en_US: Auto (Glasser picks)
+      zh_Hans: 自动（由 Glasser 选择）
+      ja_JP: 自動（Glasserが選択）
+      pt_BR: Automático (Glasser escolhe)
+  - value: scrapecreators
+    label:
+      en_US: ScrapeCreators
+      zh_Hans: ScrapeCreators
+      ja_JP: ScrapeCreators
+      pt_BR: ScrapeCreators
+  - value: apify
+    label:
+      en_US: Apify
+      zh_Hans: Apify
+      ja_JP: Apify
+      pt_BR: Apify
+  - value: tikhub
+    label:
+      en_US: TikHub
+      zh_Hans: TikHub
+      ja_JP: TikHub
+      pt_BR: TikHub
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
+  llm_description: "Data provider: auto (default, recommended) or one of scrapecreators, apify, tikhub. Name one only when the user asks for that vendor."
+  form: llm
+- name: query
+  type: string
+  required: false
+  label:
+    en_US: Query
+    zh_Hans: 查询
+    ja_JP: クエリ
+    pt_BR: Consulta
+  human_description:
+    en_US: Search phrase or question.
+    zh_Hans: 搜索词或问题。
+    ja_JP: 検索語または質問。
+    pt_BR: Termo de busca ou pergunta.
+  llm_description: Search phrase or question.
+  form: llm
+- name: handle
+  type: string
+  required: false
+  label:
+    en_US: Handle
+    zh_Hans: 账号
+    ja_JP: ハンドル
+    pt_BR: Handle
+  human_description:
+    en_US: A username or handle without @, or a subreddit name.
+    zh_Hans: 用户名或账号（不带 @），或 subreddit 名称。
+    ja_JP: '@なしのユーザー名またはハンドル、あるいはsubreddit名。'
+    pt_BR: Um nome de usuário ou handle sem @, ou o nome de um subreddit.
+  llm_description: A username or handle without @, or a subreddit name.
+  form: llm
+- name: url
+  type: string
+  required: false
+  label:
+    en_US: URL
+    zh_Hans: URL
+    ja_JP: URL
+    pt_BR: URL
+  human_description:
+    en_US: A full http(s) URL.
+    zh_Hans: 完整的 http(s) URL。
+    ja_JP: 完全なhttp(s) URL。
+    pt_BR: Uma URL http(s) completa.
+  llm_description: A full http(s) URL.
+  form: llm
+- name: platform
+  type: string
+  required: false
+  label:
+    en_US: Platform
+    zh_Hans: 平台
+    ja_JP: プラットフォーム
+    pt_BR: Plataforma
+  human_description:
+    en_US: "For find_profiles: instagram, tiktok, youtube, x, twitter or facebook."
+    zh_Hans: find_profiles 用：instagram、tiktok、youtube、x、twitter 或 facebook。
+    ja_JP: "find_profiles用: instagram, tiktok, youtube, x, twitter, facebook。"
+    pt_BR: "Para find_profiles: instagram, tiktok, youtube, x, twitter ou facebook."
+  llm_description: "For find_profiles: instagram, tiktok, youtube, x, twitter or facebook."
+  form: llm
+- name: limit
+  type: number
+  required: false
+  label:
+    en_US: Limit
+    zh_Hans: 数量
+    ja_JP: 件数
+    pt_BR: Limite
+  human_description:
+    en_US: "How many rows to return. Keep it small: the charge may depend on it."
+    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
+    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
+    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
+  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
+  form: llm
+  min: 1
+extra:
+  python:
+    source: tools/social_research.py

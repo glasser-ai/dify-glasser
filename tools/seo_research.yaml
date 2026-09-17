@@ -1,0 +1,204 @@
+identity:
+  name: seo_research
+  author: glasser-ai
+  label:
+    en_US: SEO Research
+    zh_Hans: SEO 研究
+    ja_JP: SEOリサーチ
+    pt_BR: Pesquisa de SEO
+description:
+  human:
+    en_US: "Keyword volume and difficulty, keyword ideas, a domain's organic traffic and ranking keywords, backlinks and referring domains, domain rating, Google results. Semrush, DataForSEO, Ahrefs and Serpstat behind one Key."
+    zh_Hans: 关键词量与难度、关键词拓展、域名自然流量与排名关键词、外链与引荐域名、域名评分、Google 结果。一个 Key 背后是 Semrush、DataForSEO、Ahrefs、Serpstat。
+    ja_JP: キーワードのボリュームと難易度、キーワード候補、ドメインのオーガニックトラフィックとランキングキーワード、被リンクと参照ドメイン、ドメインレーティング、Google結果。Semrush、DataForSEO、Ahrefs、Serpstatを1つのKeyで。
+    pt_BR: Volume e dificuldade de palavras-chave, ideias de palavras-chave, tráfego orgânico e palavras-chave de um domínio, backlinks e domínios de referência, domain rating, resultados do Google. Semrush, DataForSEO, Ahrefs e Serpstat com uma única Key.
+  llm: "SEO data. Keyword actions take keywords (comma-separated): 'keyword_overview' (volume, difficulty, CPC), 'keyword_ideas' (related terms), 'serp' (Google organic results for the first keyword). Domain actions take domain: 'domain_overview' (organic traffic and keyword count), 'ranked_keywords', 'backlinks_overview' (totals), 'backlinks' (rows), 'referring_domains', 'domain_rating' (Ahrefs DR, $0.0005). country is a two-letter code, default us. provider 'auto' picks the cheapest good source per action (semrush for one keyword, serpstat for several, dataforseo for domains); name a provider only when the user asks. Each call is one paid run; report the charge and the run URL."
+parameters:
+- name: action
+  type: select
+  required: true
+  default: keyword_overview
+  options:
+  - value: keyword_overview
+    label:
+      en_US: Keyword metrics
+      zh_Hans: 关键词指标
+      ja_JP: キーワード指標
+      pt_BR: Métricas de palavra-chave
+  - value: keyword_ideas
+    label:
+      en_US: Keyword ideas
+      zh_Hans: 关键词拓展
+      ja_JP: キーワード候補
+      pt_BR: Ideias de palavras-chave
+  - value: domain_overview
+    label:
+      en_US: Domain organic overview
+      zh_Hans: 域名自然流量概览
+      ja_JP: ドメインのオーガニック概要
+      pt_BR: Visão geral orgânica do domínio
+  - value: ranked_keywords
+    label:
+      en_US: Keywords a domain ranks for
+      zh_Hans: 域名排名关键词
+      ja_JP: ドメインのランキングキーワード
+      pt_BR: Palavras-chave em que o domínio rankeia
+  - value: backlinks_overview
+    label:
+      en_US: Backlink totals
+      zh_Hans: 外链总览
+      ja_JP: 被リンク総計
+      pt_BR: Totais de backlinks
+  - value: backlinks
+    label:
+      en_US: Backlinks list
+      zh_Hans: 外链列表
+      ja_JP: 被リンク一覧
+      pt_BR: Lista de backlinks
+  - value: referring_domains
+    label:
+      en_US: Referring domains
+      zh_Hans: 引荐域名
+      ja_JP: 参照ドメイン
+      pt_BR: Domínios de referência
+  - value: domain_rating
+    label:
+      en_US: Domain rating
+      zh_Hans: 域名评分
+      ja_JP: ドメインレーティング
+      pt_BR: Domain Rating
+  - value: serp
+    label:
+      en_US: Google results for a keyword
+      zh_Hans: 关键词的 Google 结果
+      ja_JP: キーワードのGoogle結果
+      pt_BR: Resultados do Google para uma palavra-chave
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
+  llm_description: "One of: keyword_overview, keyword_ideas, domain_overview, ranked_keywords, backlinks_overview, backlinks, referring_domains, domain_rating, serp."
+  form: llm
+- name: provider
+  type: select
+  required: false
+  default: auto
+  options:
+  - value: auto
+    label:
+      en_US: Auto (Glasser picks)
+      zh_Hans: 自动（由 Glasser 选择）
+      ja_JP: 自動（Glasserが選択）
+      pt_BR: Automático (Glasser escolhe)
+  - value: semrush
+    label:
+      en_US: Semrush
+      zh_Hans: Semrush
+      ja_JP: Semrush
+      pt_BR: Semrush
+  - value: serpstat
+    label:
+      en_US: Serpstat
+      zh_Hans: Serpstat
+      ja_JP: Serpstat
+      pt_BR: Serpstat
+  - value: dataforseo
+    label:
+      en_US: DataForSEO
+      zh_Hans: DataForSEO
+      ja_JP: DataForSEO
+      pt_BR: DataForSEO
+  - value: ahrefs
+    label:
+      en_US: Ahrefs
+      zh_Hans: Ahrefs
+      ja_JP: Ahrefs
+      pt_BR: Ahrefs
+  - value: serper
+    label:
+      en_US: Serper
+      zh_Hans: Serper
+      ja_JP: Serper
+      pt_BR: Serper
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
+  llm_description: "Data provider: auto (default, recommended) or one of semrush, serpstat, dataforseo, ahrefs, serper. Name one only when the user asks for that vendor."
+  form: llm
+- name: keywords
+  type: string
+  required: false
+  label:
+    en_US: Keywords
+    zh_Hans: 关键词
+    ja_JP: キーワード
+    pt_BR: Palavras-chave
+  human_description:
+    en_US: One or more keywords, comma-separated.
+    zh_Hans: 一个或多个关键词，逗号分隔。
+    ja_JP: 1つ以上のキーワード、カンマ区切り。
+    pt_BR: Uma ou mais palavras-chave, separadas por vírgula.
+  llm_description: One or more keywords, comma-separated.
+  form: llm
+- name: domain
+  type: string
+  required: false
+  label:
+    en_US: Domain
+    zh_Hans: 域名
+    ja_JP: ドメイン
+    pt_BR: Domínio
+  human_description:
+    en_US: A company website domain, e.g. stripe.com.
+    zh_Hans: 公司网站域名，如 stripe.com。
+    ja_JP: "企業サイトのドメイン（例: stripe.com）。"
+    pt_BR: O domínio do site da empresa, por exemplo stripe.com.
+  llm_description: A company website domain, e.g. stripe.com.
+  form: llm
+- name: country
+  type: string
+  required: false
+  label:
+    en_US: Country
+    zh_Hans: 国家
+    ja_JP: 国
+    pt_BR: País
+  human_description:
+    en_US: Two-letter country code, e.g. us, gb, de (default us).
+    zh_Hans: 两位国家代码，如 us、gb、de（默认 us）。
+    ja_JP: "2文字の国コード（例: us, gb, de、デフォルトus）。"
+    pt_BR: Código de país de duas letras, por exemplo us, gb, de (padrão us).
+  llm_description: Two-letter country code, e.g. us, gb, de (default us).
+  form: llm
+- name: limit
+  type: number
+  required: false
+  label:
+    en_US: Limit
+    zh_Hans: 数量
+    ja_JP: 件数
+    pt_BR: Limite
+  human_description:
+    en_US: "How many rows to return. Keep it small: the charge may depend on it."
+    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
+    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
+    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
+  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
+  form: llm
+  min: 1
+extra:
+  python:
+    source: tools/seo_research.py

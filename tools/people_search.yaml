@@ -1,0 +1,264 @@
+identity:
+  name: people_search
+  author: glasser-ai
+  label:
+    en_US: Find People
+    zh_Hans: 找人
+    ja_JP: 人物検索
+    pt_BR: Encontrar pessoas
+description:
+  human:
+    en_US: Find B2B people and decision makers, enrich one person, or find a work email. Apollo, People Data Labs, Hunter, Prospeo, LeadMagic and ZoomInfo behind one Key; provider=auto picks for you.
+    zh_Hans: 查找 B2B 人物和决策者、补全一个人、或查找工作邮箱。一个 Key 背后是 Apollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfo；provider=auto 自动选择。
+    ja_JP: B2Bの人物や意思決定者を検索、1人を補完、仕事用メールを検索。Apollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfoを1つのKeyで。provider=autoで自動選択。
+    pt_BR: Encontre pessoas B2B e decisores, enriqueça uma pessoa ou encontre um e-mail de trabalho. Apollo, People Data Labs, Hunter, Prospeo, LeadMagic e ZoomInfo com uma única Key; provider=auto escolhe por você.
+  llm: "Find B2B people. action 'search': people matching job_titles, seniorities, locations, company_domain or keywords (any combination; apollo search is free, results carry name, title and employer). action 'enrich': one known person's profile and contact data from linkedin_url, email, or full_name plus company_domain. action 'find_email': the work email of full_name at company_domain. provider 'auto' picks apollo for search and enrich, hunter for find_email; name a provider only when the user asks for one. Each call is one paid run; report the charge and the run URL."
+parameters:
+- name: action
+  type: select
+  required: true
+  default: search
+  options:
+  - value: search
+    label:
+      en_US: Search people
+      zh_Hans: 搜索人物
+      ja_JP: 人物を検索
+      pt_BR: Buscar pessoas
+  - value: enrich
+    label:
+      en_US: Enrich one person
+      zh_Hans: 补全一个人
+      ja_JP: 1人を補完
+      pt_BR: Enriquecer uma pessoa
+  - value: find_email
+    label:
+      en_US: Find work email
+      zh_Hans: 查找工作邮箱
+      ja_JP: 仕事用メールを検索
+      pt_BR: Encontrar e-mail de trabalho
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
+  llm_description: "One of: search, enrich, find_email."
+  form: llm
+- name: provider
+  type: select
+  required: false
+  default: auto
+  options:
+  - value: auto
+    label:
+      en_US: Auto (Glasser picks)
+      zh_Hans: 自动（由 Glasser 选择）
+      ja_JP: 自動（Glasserが選択）
+      pt_BR: Automático (Glasser escolhe)
+  - value: apollo
+    label:
+      en_US: Apollo
+      zh_Hans: Apollo
+      ja_JP: Apollo
+      pt_BR: Apollo
+  - value: pdl
+    label:
+      en_US: People Data Labs
+      zh_Hans: People Data Labs
+      ja_JP: People Data Labs
+      pt_BR: People Data Labs
+  - value: leadmagic
+    label:
+      en_US: LeadMagic
+      zh_Hans: LeadMagic
+      ja_JP: LeadMagic
+      pt_BR: LeadMagic
+  - value: zoominfo
+    label:
+      en_US: ZoomInfo
+      zh_Hans: ZoomInfo
+      ja_JP: ZoomInfo
+      pt_BR: ZoomInfo
+  - value: hunter
+    label:
+      en_US: Hunter
+      zh_Hans: Hunter
+      ja_JP: Hunter
+      pt_BR: Hunter
+  - value: prospeo
+    label:
+      en_US: Prospeo
+      zh_Hans: Prospeo
+      ja_JP: Prospeo
+      pt_BR: Prospeo
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
+  llm_description: "Data provider: auto (default, recommended) or one of apollo, pdl, leadmagic, zoominfo, hunter, prospeo. Name one only when the user asks for that vendor."
+  form: llm
+- name: job_titles
+  type: string
+  required: false
+  label:
+    en_US: Job titles
+    zh_Hans: 职位
+    ja_JP: 役職
+    pt_BR: Cargos
+  human_description:
+    en_US: "Comma-separated job titles, e.g. 'CTO, VP Engineering'."
+    zh_Hans: "职位列表，逗号分隔，如 'CTO, VP Engineering'。"
+    ja_JP: "役職のカンマ区切りリスト（例: 'CTO, VP Engineering'）。"
+    pt_BR: "Cargos separados por vírgula, por exemplo 'CTO, VP Engineering'."
+  llm_description: "Comma-separated job titles, e.g. 'CTO, VP Engineering'."
+  form: llm
+- name: seniorities
+  type: string
+  required: false
+  label:
+    en_US: Seniorities
+    zh_Hans: 级别
+    ja_JP: 役職レベル
+    pt_BR: Senioridades
+  human_description:
+    en_US: "Comma-separated seniority levels, e.g. 'c_suite, vp, director' (search with apollo)."
+    zh_Hans: "级别列表，逗号分隔，如 'c_suite, vp, director'（apollo 的 search 用）。"
+    ja_JP: "役職レベルのカンマ区切り（例: 'c_suite, vp, director'、apolloのsearch用）。"
+    pt_BR: "Níveis de senioridade separados por vírgula, por exemplo 'c_suite, vp, director' (search com apollo)."
+  llm_description: "Comma-separated seniority levels, e.g. 'c_suite, vp, director' (search with apollo)."
+  form: llm
+- name: locations
+  type: string
+  required: false
+  label:
+    en_US: Locations
+    zh_Hans: 地区
+    ja_JP: 所在地
+    pt_BR: Localizações
+  human_description:
+    en_US: Comma-separated cities, states or countries.
+    zh_Hans: 城市、州或国家，逗号分隔。
+    ja_JP: 都市、州、国のカンマ区切り。
+    pt_BR: Cidades, estados ou países separados por vírgula.
+  llm_description: Comma-separated cities, states or countries.
+  form: llm
+- name: company_domain
+  type: string
+  required: false
+  label:
+    en_US: Company domain
+    zh_Hans: 公司域名
+    ja_JP: 企業ドメイン
+    pt_BR: Domínio da empresa
+  human_description:
+    en_US: "The employer's website domain, e.g. stripe.com."
+    zh_Hans: 雇主的网站域名，如 stripe.com。
+    ja_JP: "雇用主のサイトのドメイン（例: stripe.com）。"
+    pt_BR: O domínio do site do empregador, por exemplo stripe.com.
+  llm_description: "The employer's website domain, e.g. stripe.com."
+  form: llm
+- name: company_name
+  type: string
+  required: false
+  label:
+    en_US: Company name
+    zh_Hans: 公司名称
+    ja_JP: 企業名
+    pt_BR: Nome da empresa
+  human_description:
+    en_US: "The employer's name, when the domain is unknown."
+    zh_Hans: 雇主名称，域名未知时使用。
+    ja_JP: 雇用主の名前（ドメイン不明時）。
+    pt_BR: O nome do empregador, quando o domínio é desconhecido.
+  llm_description: "The employer's name, when the domain is unknown."
+  form: llm
+- name: keywords
+  type: string
+  required: false
+  label:
+    en_US: Keywords
+    zh_Hans: 关键词
+    ja_JP: キーワード
+    pt_BR: Palavras-chave
+  human_description:
+    en_US: Free-text keywords for people search (apollo).
+    zh_Hans: 人物搜索的自由关键词（apollo）。
+    ja_JP: 人物検索の自由キーワード（apollo）。
+    pt_BR: Palavras-chave livres para busca de pessoas (apollo).
+  llm_description: Free-text keywords for people search (apollo).
+  form: llm
+- name: full_name
+  type: string
+  required: false
+  label:
+    en_US: Full name
+    zh_Hans: 全名
+    ja_JP: 氏名
+    pt_BR: Nome completo
+  human_description:
+    en_US: "The person's full name, e.g. 'Patrick Collison'."
+    zh_Hans: "人物全名，如 'Patrick Collison'。"
+    ja_JP: "人物の氏名（例: 'Patrick Collison'）。"
+    pt_BR: "O nome completo da pessoa, por exemplo 'Patrick Collison'."
+  llm_description: "The person's full name, e.g. 'Patrick Collison'."
+  form: llm
+- name: email
+  type: string
+  required: false
+  label:
+    en_US: Email
+    zh_Hans: 邮箱
+    ja_JP: メール
+    pt_BR: E-mail
+  human_description:
+    en_US: "The person's email address."
+    zh_Hans: 人物的邮箱地址。
+    ja_JP: 人物のメールアドレス。
+    pt_BR: O endereço de e-mail da pessoa.
+  llm_description: "The person's email address."
+  form: llm
+- name: linkedin_url
+  type: string
+  required: false
+  label:
+    en_US: LinkedIn URL
+    zh_Hans: LinkedIn 链接
+    ja_JP: LinkedIn URL
+    pt_BR: URL do LinkedIn
+  human_description:
+    en_US: "The person's LinkedIn profile URL."
+    zh_Hans: 人物的 LinkedIn 个人主页链接。
+    ja_JP: 人物のLinkedInプロフィールURL。
+    pt_BR: A URL do perfil do LinkedIn da pessoa.
+  llm_description: "The person's LinkedIn profile URL."
+  form: llm
+- name: limit
+  type: number
+  required: false
+  label:
+    en_US: Limit
+    zh_Hans: 数量
+    ja_JP: 件数
+    pt_BR: Limite
+  human_description:
+    en_US: "How many rows to return. Keep it small: the charge may depend on it."
+    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
+    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
+    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
+  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
+  form: llm
+  min: 1
+extra:
+  python:
+    source: tools/people_search.py

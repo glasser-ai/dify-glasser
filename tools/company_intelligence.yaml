@@ -1,0 +1,228 @@
+identity:
+  name: company_intelligence
+  author: glasser-ai
+  label:
+    en_US: Company Intelligence
+    zh_Hans: 公司情报
+    ja_JP: 企業インテリジェンス
+    pt_BR: Inteligência de empresas
+description:
+  human:
+    en_US: "Everything about one company from its domain: profile and firmographics, technology stack, website traffic, competitors, funding rounds, news. Apollo, PDL, Hunter, PredictLeads, BuiltWith, DataForSEO, Ahrefs and more behind one Key."
+    zh_Hans: 按域名了解一家公司：档案与画像、技术栈、网站流量、竞争对手、融资、新闻。一个 Key 背后是 Apollo、PDL、Hunter、PredictLeads、BuiltWith、DataForSEO、Ahrefs 等。
+    ja_JP: "ドメインから企業のすべてを: プロフィール、技術スタック、サイトトラフィック、競合、資金調達、ニュース。Apollo、PDL、Hunter、PredictLeads、BuiltWith、DataForSEO、Ahrefsなどを1つのKeyで。"
+    pt_BR: "Tudo sobre uma empresa a partir do domínio: perfil e firmografia, stack de tecnologia, tráfego do site, concorrentes, rodadas de investimento, notícias. Apollo, PDL, Hunter, PredictLeads, BuiltWith, DataForSEO, Ahrefs e mais com uma única Key."
+  llm: "Company intelligence for one domain. action 'enrich': industry, size, revenue, HQ, funding summary. 'tech_stack': technologies the site runs. 'traffic': estimated organic traffic (dataforseo) or Similarweb-style visits (apify). 'competitors': domains competing for the same keywords, or similar companies (predictleads). 'funding': funding rounds with dates and investors. 'news': classified company events (predictleads) or Google News (serper). domain is always required. provider 'auto' picks the default per action; name one only when the user asks. Each call is one paid run; report the charge and the run URL."
+parameters:
+- name: action
+  type: select
+  required: true
+  default: enrich
+  options:
+  - value: enrich
+    label:
+      en_US: Company profile
+      zh_Hans: 公司档案
+      ja_JP: 企業プロフィール
+      pt_BR: Perfil da empresa
+  - value: tech_stack
+    label:
+      en_US: Technology stack
+      zh_Hans: 技术栈
+      ja_JP: 技術スタック
+      pt_BR: Stack de tecnologia
+  - value: traffic
+    label:
+      en_US: Website traffic
+      zh_Hans: 网站流量
+      ja_JP: サイトトラフィック
+      pt_BR: Tráfego do site
+  - value: competitors
+    label:
+      en_US: Competitors
+      zh_Hans: 竞争对手
+      ja_JP: 競合
+      pt_BR: Concorrentes
+  - value: funding
+    label:
+      en_US: Funding rounds
+      zh_Hans: 融资记录
+      ja_JP: 資金調達
+      pt_BR: Rodadas de investimento
+  - value: news
+    label:
+      en_US: Company news
+      zh_Hans: 公司新闻
+      ja_JP: 企業ニュース
+      pt_BR: Notícias da empresa
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
+  llm_description: "One of: enrich, tech_stack, traffic, competitors, funding, news."
+  form: llm
+- name: provider
+  type: select
+  required: false
+  default: auto
+  options:
+  - value: auto
+    label:
+      en_US: Auto (Glasser picks)
+      zh_Hans: 自动（由 Glasser 选择）
+      ja_JP: 自動（Glasserが選択）
+      pt_BR: Automático (Glasser escolhe)
+  - value: apollo
+    label:
+      en_US: Apollo
+      zh_Hans: Apollo
+      ja_JP: Apollo
+      pt_BR: Apollo
+  - value: pdl
+    label:
+      en_US: People Data Labs
+      zh_Hans: People Data Labs
+      ja_JP: People Data Labs
+      pt_BR: People Data Labs
+  - value: hunter
+    label:
+      en_US: Hunter
+      zh_Hans: Hunter
+      ja_JP: Hunter
+      pt_BR: Hunter
+  - value: prospeo
+    label:
+      en_US: Prospeo
+      zh_Hans: Prospeo
+      ja_JP: Prospeo
+      pt_BR: Prospeo
+  - value: predictleads
+    label:
+      en_US: PredictLeads
+      zh_Hans: PredictLeads
+      ja_JP: PredictLeads
+      pt_BR: PredictLeads
+  - value: leadmagic
+    label:
+      en_US: LeadMagic
+      zh_Hans: LeadMagic
+      ja_JP: LeadMagic
+      pt_BR: LeadMagic
+  - value: builtwith
+    label:
+      en_US: BuiltWith
+      zh_Hans: BuiltWith
+      ja_JP: BuiltWith
+      pt_BR: BuiltWith
+  - value: dataforseo
+    label:
+      en_US: DataForSEO
+      zh_Hans: DataForSEO
+      ja_JP: DataForSEO
+      pt_BR: DataForSEO
+  - value: ahrefs
+    label:
+      en_US: Ahrefs
+      zh_Hans: Ahrefs
+      ja_JP: Ahrefs
+      pt_BR: Ahrefs
+  - value: apify
+    label:
+      en_US: Apify
+      zh_Hans: Apify
+      ja_JP: Apify
+      pt_BR: Apify
+  - value: serpstat
+    label:
+      en_US: Serpstat
+      zh_Hans: Serpstat
+      ja_JP: Serpstat
+      pt_BR: Serpstat
+  - value: serper
+    label:
+      en_US: Serper
+      zh_Hans: Serper
+      ja_JP: Serper
+      pt_BR: Serper
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
+  llm_description: "Data provider: auto (default, recommended) or one of apollo, pdl, hunter, prospeo, predictleads, leadmagic, builtwith, dataforseo, ahrefs, apify, serpstat, serper. Name one only when the user asks for that vendor."
+  form: llm
+- name: domain
+  type: string
+  required: false
+  label:
+    en_US: Domain
+    zh_Hans: 域名
+    ja_JP: ドメイン
+    pt_BR: Domínio
+  human_description:
+    en_US: A company website domain, e.g. stripe.com.
+    zh_Hans: 公司网站域名，如 stripe.com。
+    ja_JP: "企業サイトのドメイン（例: stripe.com）。"
+    pt_BR: O domínio do site da empresa, por exemplo stripe.com.
+  llm_description: A company website domain, e.g. stripe.com.
+  form: llm
+- name: country
+  type: string
+  required: false
+  label:
+    en_US: Country
+    zh_Hans: 国家
+    ja_JP: 国
+    pt_BR: País
+  human_description:
+    en_US: Two-letter country code, e.g. us, gb, de (default us).
+    zh_Hans: 两位国家代码，如 us、gb、de（默认 us）。
+    ja_JP: "2文字の国コード（例: us, gb, de、デフォルトus）。"
+    pt_BR: Código de país de duas letras, por exemplo us, gb, de (padrão us).
+  llm_description: Two-letter country code, e.g. us, gb, de (default us).
+  form: llm
+- name: limit
+  type: number
+  required: false
+  label:
+    en_US: Limit
+    zh_Hans: 数量
+    ja_JP: 件数
+    pt_BR: Limite
+  human_description:
+    en_US: "How many rows to return. Keep it small: the charge may depend on it."
+    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
+    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
+    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
+  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
+  form: llm
+  min: 1
+- name: query
+  type: string
+  required: false
+  label:
+    en_US: Query
+    zh_Hans: 查询
+    ja_JP: クエリ
+    pt_BR: Consulta
+  human_description:
+    en_US: Search phrase or question.
+    zh_Hans: 搜索词或问题。
+    ja_JP: 検索語または質問。
+    pt_BR: Termo de busca ou pergunta.
+  llm_description: Search phrase or question.
+  form: llm
+extra:
+  python:
+    source: tools/company_intelligence.py

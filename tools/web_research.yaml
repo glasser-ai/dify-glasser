@@ -1,0 +1,219 @@
+identity:
+  name: web_research
+  author: glasser-ai
+  label:
+    en_US: Web Research
+    zh_Hans: 网页研究
+    ja_JP: ウェブリサーチ
+    pt_BR: Pesquisa na web
+description:
+  human:
+    en_US: Google web, news, places, scholar, shopping, image and video search, reading a web page, neural search and question answering. Serper, SerpApi and Exa behind one Key.
+    zh_Hans: Google 网页、新闻、地点、学术、商品、图片、视频搜索，读取网页，语义搜索与问答。一个 Key 背后是 Serper、SerpApi、Exa。
+    ja_JP: Googleのウェブ、ニュース、場所、学術、ショッピング、画像、動画検索、ウェブページの読み取り、ニューラル検索と質問応答。Serper、SerpApi、Exaを1つのKeyで。
+    pt_BR: Busca web, notícias, lugares, acadêmica, compras, imagens e vídeos do Google, leitura de páginas web, busca neural e resposta a perguntas. Serper, SerpApi e Exa com uma única Key.
+  llm: "Live web data. Query actions take query: 'search' (Google organic results), 'news', 'places' (local businesses; put the area in the query), 'scholar', 'shopping', 'images', 'videos', 'answer' (a written answer with cited sources, exa). URL actions take url: 'scrape' (readable content and Markdown of one page), 'similar' (pages like this one, exa). provider 'auto' picks serper for Google-style actions and exa for answer and similar; 'exa' on search does neural search by meaning. Each call is one paid run, typically $0.001 to $0.015; report the charge and the run URL."
+parameters:
+- name: action
+  type: select
+  required: true
+  default: search
+  options:
+  - value: search
+    label:
+      en_US: Web search
+      zh_Hans: 网页搜索
+      ja_JP: ウェブ検索
+      pt_BR: Busca na web
+  - value: news
+    label:
+      en_US: News search
+      zh_Hans: 新闻搜索
+      ja_JP: ニュース検索
+      pt_BR: Busca de notícias
+  - value: scrape
+    label:
+      en_US: Read a web page
+      zh_Hans: 读取网页
+      ja_JP: ウェブページを読む
+      pt_BR: Ler uma página web
+  - value: places
+    label:
+      en_US: Places / local businesses
+      zh_Hans: 地点 / 本地商家
+      ja_JP: 場所・ローカルビジネス
+      pt_BR: Lugares / negócios locais
+  - value: scholar
+    label:
+      en_US: Academic papers
+      zh_Hans: 学术论文
+      ja_JP: 学術論文
+      pt_BR: Artigos acadêmicos
+  - value: shopping
+    label:
+      en_US: Shopping
+      zh_Hans: 商品
+      ja_JP: ショッピング
+      pt_BR: Compras
+  - value: images
+    label:
+      en_US: Images
+      zh_Hans: 图片
+      ja_JP: 画像
+      pt_BR: Imagens
+  - value: videos
+    label:
+      en_US: Videos
+      zh_Hans: 视频
+      ja_JP: 動画
+      pt_BR: Vídeos
+  - value: answer
+    label:
+      en_US: Answer a question from the web
+      zh_Hans: 从网页回答问题
+      ja_JP: ウェブから質問に回答
+      pt_BR: Responder uma pergunta a partir da web
+  - value: similar
+    label:
+      en_US: Pages similar to a URL
+      zh_Hans: 与 URL 相似的页面
+      ja_JP: URLに類似したページ
+      pt_BR: Páginas semelhantes a uma URL
+  label:
+    en_US: Action
+    zh_Hans: 操作
+    ja_JP: アクション
+    pt_BR: Ação
+  human_description:
+    en_US: What to do; see the tool description.
+    zh_Hans: 要做的事；见工具说明。
+    ja_JP: 実行内容。ツールの説明を参照。
+    pt_BR: O que fazer; veja a descrição da ferramenta.
+  llm_description: "One of: search, news, scrape, places, scholar, shopping, images, videos, answer, similar."
+  form: llm
+- name: provider
+  type: select
+  required: false
+  default: auto
+  options:
+  - value: auto
+    label:
+      en_US: Auto (Glasser picks)
+      zh_Hans: 自动（由 Glasser 选择）
+      ja_JP: 自動（Glasserが選択）
+      pt_BR: Automático (Glasser escolhe)
+  - value: serper
+    label:
+      en_US: Serper
+      zh_Hans: Serper
+      ja_JP: Serper
+      pt_BR: Serper
+  - value: serpapi
+    label:
+      en_US: SerpApi
+      zh_Hans: SerpApi
+      ja_JP: SerpApi
+      pt_BR: SerpApi
+  - value: exa
+    label:
+      en_US: Exa
+      zh_Hans: Exa
+      ja_JP: Exa
+      pt_BR: Exa
+  - value: dataforseo
+    label:
+      en_US: DataForSEO
+      zh_Hans: DataForSEO
+      ja_JP: DataForSEO
+      pt_BR: DataForSEO
+  label:
+    en_US: Provider
+    zh_Hans: 数据来源
+    ja_JP: プロバイダー
+    pt_BR: Provider
+  human_description:
+    en_US: Which data provider to use. Auto lets Glasser pick a good default for the action.
+    zh_Hans: 使用哪家数据提供方。auto 由 Glasser 为该操作选择默认来源。
+    ja_JP: 使用するデータプロバイダー。autoならGlasserがアクションに応じて選択。
+    pt_BR: Qual provedor de dados usar. Auto deixa o Glasser escolher um bom padrão para a ação.
+  llm_description: "Data provider: auto (default, recommended) or one of serper, serpapi, exa, dataforseo. Name one only when the user asks for that vendor."
+  form: llm
+- name: query
+  type: string
+  required: false
+  label:
+    en_US: Query
+    zh_Hans: 查询
+    ja_JP: クエリ
+    pt_BR: Consulta
+  human_description:
+    en_US: Search phrase or question.
+    zh_Hans: 搜索词或问题。
+    ja_JP: 検索語または質問。
+    pt_BR: Termo de busca ou pergunta.
+  llm_description: Search phrase or question.
+  form: llm
+- name: url
+  type: string
+  required: false
+  label:
+    en_US: URL
+    zh_Hans: URL
+    ja_JP: URL
+    pt_BR: URL
+  human_description:
+    en_US: A full http(s) URL.
+    zh_Hans: 完整的 http(s) URL。
+    ja_JP: 完全なhttp(s) URL。
+    pt_BR: Uma URL http(s) completa.
+  llm_description: A full http(s) URL.
+  form: llm
+- name: country
+  type: string
+  required: false
+  label:
+    en_US: Country
+    zh_Hans: 国家
+    ja_JP: 国
+    pt_BR: País
+  human_description:
+    en_US: Two-letter country code, e.g. us, gb, de (default us).
+    zh_Hans: 两位国家代码，如 us、gb、de（默认 us）。
+    ja_JP: "2文字の国コード（例: us, gb, de、デフォルトus）。"
+    pt_BR: Código de país de duas letras, por exemplo us, gb, de (padrão us).
+  llm_description: Two-letter country code, e.g. us, gb, de (default us).
+  form: llm
+- name: language
+  type: string
+  required: false
+  label:
+    en_US: Language
+    zh_Hans: 语言
+    ja_JP: 言語
+    pt_BR: Idioma
+  human_description:
+    en_US: Two-letter language code for the results, e.g. en, de.
+    zh_Hans: 结果语言的两位代码，如 en、de。
+    ja_JP: "結果の言語コード（例: en, de）。"
+    pt_BR: Código de idioma de duas letras para os resultados, por exemplo en, de.
+  llm_description: Two-letter language code for the results, e.g. en, de.
+  form: llm
+- name: limit
+  type: number
+  required: false
+  label:
+    en_US: Limit
+    zh_Hans: 数量
+    ja_JP: 件数
+    pt_BR: Limite
+  human_description:
+    en_US: "How many rows to return. Keep it small: the charge may depend on it."
+    zh_Hans: 返回行数。保持小量：扣费可能与它相关。
+    ja_JP: 返す行数。少なめに：課金額が依存する場合があります。
+    pt_BR: "Quantas linhas retornar. Mantenha baixo: a cobrança pode depender disso."
+  llm_description: "How many rows to return. Keep it small: the charge may depend on it."
+  form: llm
+  min: 1
+extra:
+  python:
+    source: tools/web_research.py

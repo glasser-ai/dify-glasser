@@ -1,7 +1,7 @@
 # Glasser
 
 **作者：** glasser-ai
-**版本：** 0.1.0
+**版本：** 0.2.0
 **类型：** tool
 
 [English](README.md)
@@ -12,31 +12,35 @@ Glasser 是一个经纪层。它以单个 Key 出售可执行的第三方 API �
 
 ## 工具
 
-插件暴露的七个动词与 Glasser 的 MCP 服务器和 CLI 完全相同。端点本身永远不是工具：目录是数据，运行时用 `search` 找到。
+五个业务级工具覆盖常见任务。每个工具接收 `action` 和 `provider`；`provider = auto`（默认）由插件为该操作选择合适的数据源，指定 provider 则强制使用它。Agent 只说要什么数据，不用知道该调哪家供应商。
 
-| 工具 | 作用 |
-|---|---|
-| **search** | 按关键词搜索数据源。每条结果带 provider、endpoint、价格、运行模式和相关性分数，分页。 |
-| **inspect** | 一个端点的执行契约：provider 原生输入 schema、含全部计费条款的精确价格、端点版本、运行模式、超时。 |
-| **run** | 执行一个端点，按公布的价格从 Workspace 扣费。返回 run：provider 输出、精确扣费、run URL。可选等待异步端点结束。 |
-| **runs_get** | 按 id 取一个 run，可选等待到终态。 |
-| **runs_list** | Workspace 的 runs，按时间倒序，可按状态、provider、endpoint 过滤。 |
-| **runs_stop** | 请求停止一个进行中的 run。 |
-| **balance** | 余额、预留、可用额度（美元）。也是最便宜的 Key 有效性检查。 |
+| 工具 | Agent 能做什么 | 背后的数据源 |
+|---|---|---|
+| **找人** (`people_search`) | 按职位、级别、地区、雇主搜索人物；补全一个人；查找工作邮箱 | Apollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfo |
+| **公司情报** (`company_intelligence`) | 公司档案与画像、技术栈、网站流量、竞争对手、融资、新闻 | Apollo、PDL、Hunter、Prospeo、PredictLeads、LeadMagic、BuiltWith、DataForSEO、Ahrefs、Serpstat、Apify、Serper |
+| **SEO 研究** (`seo_research`) | 关键词指标与拓展、域名自然流量概览、排名关键词、外链、引荐域名、域名评分、Google 结果 | Semrush、DataForSEO、Ahrefs、Serpstat、Serper |
+| **网页研究** (`web_research`) | 网页、新闻、地点、学术、商品、图片、视频搜索；读取网页；语义搜索、问答、相似页面 | Serper、SerpApi、Exa、DataForSEO |
+| **社交研究** (`social_research`) | Reddit、X、YouTube、TikTok、Instagram、LinkedIn：搜索帖子、读取主页和频道、查找社交账号 | ScrapeCreators、Apify、TikHub |
 
-### Agent 的标准流程
+另有七个目录工具，可触达其余 1,400 多个端点，与 Glasser 的 MCP 服务器和 CLI 是同一组动词：`search` 搜索数据源、`inspect` 查看端点契约和价格、`run` 执行、`runs_get`、`runs_list`、`runs_stop`、`balance`。
 
-1. 用自然语言描述能力调用 `search`（如 "enrich a company by domain"、"domain rating"）。
-2. `inspect` 选中的端点。执行前先读价格和计费条款。
-3. 按 inspect 返回的 `input_schema` 构造输入，带上 inspect 给出的 `endpoint_version`，调用 `run`。
-4. 汇报 run 状态、provider 的回答、扣费和 run URL。
+### 业务级调用如何工作
+
+1. 工具通过路由表（`utils/routes.py`）把 `(action, provider)` 解析成一个 Glasser 端点，并把扁平参数转换成该端点的 provider 原生输入。
+2. 执行该端点。结果就是 Glasser API 返回的 run（provider 输出、精确的 `charge_usd`、`run_url`），外加一个 `routed` 块，说明这次调用由哪个端点服务、收到了什么输入。
+3. 路由、回退和定价由 Glasser 决定；插件不保存状态，除了断线时复用幂等键之外不做任何重试。
+
+完整路由表见英文 README 的 Routing table 一节。
 
 ### 示例提示词
 
-- "example.com 的 Ahrefs 域名评分是多少？"
-- "找到 jane@example.com 的 LinkedIn 资料和当前雇主。"
-- "查 'best CRM for startups' 在德国的 Google 前 10 条结果。"
-- "按域名补全 50 家公司要花多少钱？先 inspect，不要 run。"
+- "找 stripe.com 的 CTO。"（people_search，search，apollo：免费）
+- "Patrick Collison 在 stripe.com 的工作邮箱是什么？"（people_search，find_email，hunter）
+- "shopify.com 用了哪些技术？"（company_intelligence，tech_stack，builtwith）
+- "'espresso machine' 在英国的搜索量和难度。"（seo_research，keyword_overview，semrush）
+- "读取 https://example.com 并总结。"（web_research，scrape，serper）
+- "这周 Reddit 上大家怎么说我们的品牌？"（social_research，reddit_search，scrapecreators）
+- "用 Ahrefs 查" 会强制 `provider = ahrefs`。
 
 ## 安装
 

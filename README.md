@@ -1,7 +1,7 @@
 # Glasser
 
 **Author:** glasser-ai
-**Version:** 0.1.0
+**Version:** 0.2.0
 **Type:** tool
 
 [简体中文](README_zh_Hans.md)
@@ -12,31 +12,102 @@ Glasser is a broker. It sells runnable third-party API operations ("endpoints") 
 
 ## Tools
 
-The plugin exposes the same seven verbs as the Glasser MCP server and CLI. Endpoints are never tools: the catalog is data, found at runtime with `search`.
+Five capability tools cover the common jobs. Each takes an `action` and a `provider`; `provider = auto` (the default) lets the plugin pick a good source for that action, and naming a provider forces it. The agent says what data it wants, not which vendor to call.
 
-| Tool | What it does |
-|---|---|
-| **search** | Search the data sources by keyword. Returns provider, endpoint, price, run mode and a relevance score per hit, paginated. |
-| **inspect** | One endpoint's execution contract: provider-native input schema, exact price with every charge clause, endpoint version, run mode, timeout. |
-| **run** | Execute one endpoint. Charges the workspace per the published price. Returns the run with the provider's output, the exact charge and the run URL. Optionally waits for an async endpoint to settle. |
-| **runs_get** | One run by id, with an optional wait until it is terminal. |
-| **runs_list** | The workspace's runs, newest first, filtered by status, provider or endpoint. |
-| **runs_stop** | Request a stop for an in-flight run. |
-| **balance** | Balance, held and available, in USD. Also the cheapest check that the Key works. |
+| Tool | What the agent can do | Providers behind it |
+|---|---|---|
+| **Find People** (`people_search`) | Search people by title, seniority, location, employer; enrich one person; find a work email | Apollo, People Data Labs, Hunter, Prospeo, LeadMagic, ZoomInfo |
+| **Company Intelligence** (`company_intelligence`) | Profile and firmographics, technology stack, website traffic, competitors, funding rounds, news | Apollo, PDL, Hunter, Prospeo, PredictLeads, LeadMagic, BuiltWith, DataForSEO, Ahrefs, Serpstat, Apify, Serper |
+| **SEO Research** (`seo_research`) | Keyword metrics and ideas, domain organic overview, ranking keywords, backlinks, referring domains, domain rating, Google results | Semrush, DataForSEO, Ahrefs, Serpstat, Serper |
+| **Web Research** (`web_research`) | Web, news, places, scholar, shopping, image and video search; read a page; neural search, answers, similar pages | Serper, SerpApi, Exa, DataForSEO |
+| **Social Research** (`social_research`) | Reddit, X, YouTube, TikTok, Instagram, LinkedIn: search posts, read profiles and channels, find social accounts | ScrapeCreators, Apify, TikHub |
 
-### The flow an agent follows
+Seven catalog tools reach the rest of the 1,400+ endpoints and are the same verbs as the Glasser MCP server and CLI: `search` the data sources, `inspect` an endpoint's contract and price, `run` it, `runs_get`, `runs_list`, `runs_stop`, `balance`.
 
-1. `search` with the capability in plain words ("enrich a company by domain", "domain rating").
-2. `inspect` the chosen endpoint. Read the price and the charge clauses before running.
-3. `run` with an input built against the inspected `input_schema`, passing the `endpoint_version` from inspect.
-4. Report the run status, what the provider said, the charge and the run URL.
+### How a capability call works
+
+1. The tool resolves `(action, provider)` to one Glasser endpoint through its routing table (`utils/routes.py`) and turns the flat parameters into that endpoint's provider-native input.
+2. It runs the endpoint. The result is the run as the Glasser API returned it (provider output, exact `charge_usd`, `run_url`) plus a `routed` block naming the endpoint that served the call and the input it received.
+3. Routing, fallback and pricing decisions are Glasser's; the plugin adds no state and no retry beyond reusing the idempotency key on a dropped connection.
+
+### Routing table
+
+**people_search**
+
+| action | provider=auto | other providers |
+|---|---|---|
+| `search` | apollo | pdl, leadmagic, zoominfo, hunter |
+| `enrich` | apollo | pdl, hunter, prospeo, leadmagic |
+| `find_email` | hunter | leadmagic, prospeo, apollo |
+
+**company_intelligence**
+
+| action | provider=auto | other providers |
+|---|---|---|
+| `enrich` | apollo | pdl, hunter, prospeo, predictleads, leadmagic |
+| `tech_stack` | builtwith | predictleads, dataforseo |
+| `traffic` | dataforseo | ahrefs, apify |
+| `competitors` | dataforseo | ahrefs, serpstat, predictleads |
+| `funding` | predictleads | leadmagic |
+| `news` | predictleads | serper |
+
+**seo_research**
+
+| action | provider=auto | other providers |
+|---|---|---|
+| `keyword_overview` | semrush (serpstat for several keywords) | serpstat, dataforseo, ahrefs |
+| `keyword_ideas` | dataforseo | serpstat, ahrefs |
+| `domain_overview` | dataforseo | serpstat, ahrefs |
+| `ranked_keywords` | dataforseo | serpstat, ahrefs |
+| `backlinks_overview` | semrush | dataforseo, ahrefs, serpstat |
+| `backlinks` | semrush | dataforseo, ahrefs |
+| `referring_domains` | semrush | dataforseo, ahrefs |
+| `domain_rating` | ahrefs | — |
+| `serp` | dataforseo | serper |
+
+**web_research**
+
+| action | provider=auto | other providers |
+|---|---|---|
+| `search` | serper | serpapi, exa |
+| `news` | serper | serpapi |
+| `scrape` | serper | exa, dataforseo |
+| `places` | serper | serpapi |
+| `scholar` | serper | serpapi |
+| `shopping` | serper | serpapi |
+| `images` | serper | — |
+| `videos` | serper | — |
+| `answer` | exa | — |
+| `similar` | exa | — |
+
+**social_research**
+
+| action | provider=auto | other providers |
+|---|---|---|
+| `reddit_search` | scrapecreators | — |
+| `reddit_subreddit` | scrapecreators | apify |
+| `x_user_tweets` | scrapecreators | — |
+| `x_tweet` | scrapecreators | — |
+| `youtube_search` | scrapecreators | apify |
+| `youtube_channel` | scrapecreators | — |
+| `tiktok_search` | scrapecreators | — |
+| `instagram_profile` | scrapecreators | apify |
+| `linkedin_posts` | scrapecreators | apify |
+| `linkedin_profile` | scrapecreators | tikhub |
+| `linkedin_company` | scrapecreators | — |
+| `find_profiles` | scrapecreators | — |
+
+`provider = auto` picks are made on price and coverage. Every endpoint above is in the Glasser catalog; `inspect` shows its current price.
 
 ### Example prompts
 
-- "What is the Ahrefs domain rating of example.com?"
-- "Find the LinkedIn profile and current employer for jane@example.com."
-- "Get the top 10 Google results for 'best CRM for startups' in Germany."
-- "How much would it cost to enrich 50 companies by domain? Inspect first, do not run."
+- "Find CTOs at stripe.com." (people_search, search, apollo: free)
+- "What is the work email of Patrick Collison at stripe.com?" (people_search, find_email, hunter)
+- "What technologies does shopify.com run?" (company_intelligence, tech_stack, builtwith)
+- "Search volume and difficulty for 'espresso machine' in the UK." (seo_research, keyword_overview, semrush)
+- "Read https://example.com and summarize it." (web_research, scrape, serper)
+- "What are people saying about our brand on Reddit this week?" (social_research, reddit_search, scrapecreators)
+- "Use Ahrefs for that" forces `provider = ahrefs`.
 
 ## Setup
 
@@ -50,7 +121,7 @@ The plugin makes outbound HTTPS (port 443) requests to **`api.glasser.ai` only**
 
 ## Usage notes
 
-- **Inspect before the first run.** The price shown by `inspect` is what a normal COMPLETED call costs. The charge clauses list the exceptions, for example `NO_RESULT $0.00` means an empty answer is free. The charge rule may read volume parameters in the input (`num`, `size`, `limit`, arrays of queries), so start small.
+- **Capability tools price by their route.** Each call is one paid run at the routed endpoint's published price; the `routed` block in the result names it. For catalog tools, inspect before the first run: the price shown by `inspect` is what a normal COMPLETED call costs. The charge clauses list the exceptions, for example `NO_RESULT $0.00` means an empty answer is free. The charge rule may read volume parameters in the input (`num`, `size`, `limit`, arrays of queries), so start small.
 - **Two indicators, not one.** A run's status and the provider's response are separate. A COMPLETED run whose provider answered 404 ("person not found") is a normal outcome, charged per the endpoint's clauses. A FAILED run can carry a non-zero charge when the clauses say so.
 - **Retries never charge twice.** Every run carries an idempotency key. Pass your own UUID, or let the plugin generate one; the result echoes it as `idempotency_key`. Retry with the same key after a timeout and you get the original run back. The plugin also reuses the key when it retries a dropped connection itself.
 - **Async endpoints.** `inspect` shows the run mode. A sync endpoint returns the finished run in the same call. For an async endpoint, `run` waits by default (up to the configurable timeout, 180 seconds) and otherwise returns the in-flight run; poll it with `runs_get`.

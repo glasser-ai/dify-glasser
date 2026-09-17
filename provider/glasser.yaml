@@ -37,6 +37,11 @@ credentials_for_provider:
       pt_BR: Crie uma Key no console do Glasser. A validação chama o endpoint gratuito de saldo e não cobra nada.
     url: "https://app.glasser.ai/keys"
 tools:
+- tools/web_research.yaml
+- tools/company_intelligence.yaml
+- tools/people_search.yaml
+- tools/seo_research.yaml
+- tools/social_research.yaml
 - tools/search.yaml
 - tools/inspect.yaml
 - tools/run.yaml
