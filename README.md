@@ -4,6 +4,8 @@
 **Version:** 0.1.0
 **Type:** tool
 
+[简体中文](README_zh_Hans.md)
+
 Paid third-party API endpoints for Dify agents and workflows through **one Glasser Key**: search the data sources, inspect the exact price, run, pay per call. No signup at each vendor.
 
 Glasser is a broker. It sells runnable third-party API operations ("endpoints") under a single Key. Your agent searches the catalog, inspects an endpoint's contract and price, and runs it. The response is the provider's own output, with the exact charge and a link to the run in the Glasser console.

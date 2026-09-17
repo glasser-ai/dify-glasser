@@ -1,51 +1,67 @@
 identity:
-  name: "search"
-  author: "glasser-ai"
+  name: search
+  author: glasser-ai
   label:
-    en_US: "Search endpoints"
-    zh_Hans: "搜索端点"
+    en_US: Search endpoints
+    zh_Hans: 搜索端点
+    ja_JP: エンドポイントを検索
+    pt_BR: Pesquisar endpoints
 description:
   human:
     en_US: "Search Glasser's data sources, the runnable paid API endpoints, by keyword. Returns provider, endpoint, price, run mode and a relevance score for each hit."
-    zh_Hans: "按关键词搜索 Glasser 的数据源（可执行的付费 API 端点）。每条结果带 provider、endpoint、价格、运行模式和相关性分数。"
+    zh_Hans: 按关键词搜索 Glasser 的数据源（可执行的付费 API 端点）。每条结果带 provider、endpoint、价格、运行模式和相关性分数。
+    ja_JP: Glasserのデータソース（実行可能な有料APIエンドポイント）をキーワードで検索します。各ヒットのprovider、endpoint、価格、実行モード、関連度スコアを返します。
+    pt_BR: Pesquisa por palavra-chave as fontes de dados do Glasser, os endpoints de API pagos executáveis. Retorna provider, endpoint, preço, modo de execução e uma pontuação de relevância para cada resultado.
   llm: "Search Glasser's data sources, runnable paid API endpoints, by keyword. Returns ranked endpoint summaries: provider, endpoint, price, run mode, and a score, already filtered to what this key may run. Several providers may sell the same capability: compare price and pick; the ranking is relevance-only. Pages are 5 by default (limit up to 20); read total for how many candidates exist and pass next_cursor back as cursor for more. The score is a cosine similarity for comparing rows, not a verdict: the ranking returns its nearest candidates, so neither low scores nor the last page shows that a capability is absent. Try other words, and inspect before running."
 parameters:
-  - name: query
-    type: string
-    required: false
-    label:
-      en_US: "Query"
-      zh_Hans: "查询"
-    human_description:
-      en_US: "What the endpoint should do, in plain words, e.g. 'company enrichment by domain'. Empty lists every data source."
-      zh_Hans: "用自然语言描述要做的事，如 'company enrichment by domain'。留空则列出全部数据源。"
-    llm_description: "The capability in plain words, e.g. 'enrich a person by email', 'domain rating', 'google search results'. Say what you want done, not a vendor name, unless the user named the vendor."
-    form: llm
-  - name: limit
-    type: number
-    required: false
-    default: 5
-    min: 1
-    max: 20
-    label:
-      en_US: "Page size"
-      zh_Hans: "每页条数"
-    human_description:
-      en_US: "Endpoints per page, 1 to 20 (default 5)."
-      zh_Hans: "每页端点数，1 到 20（默认 5）。"
-    llm_description: "Endpoints per page, 1 to 20. Default 5."
-    form: llm
-  - name: cursor
-    type: string
-    required: false
-    label:
-      en_US: "Cursor"
-      zh_Hans: "游标"
-    human_description:
-      en_US: "The next_cursor from the previous page of the same query."
-      zh_Hans: "上一页同一查询返回的 next_cursor。"
-    llm_description: "The next_cursor value from the previous page. The cursor is bound to the query."
-    form: llm
+- name: query
+  type: string
+  required: false
+  label:
+    en_US: Query
+    zh_Hans: 查询
+    ja_JP: クエリ
+    pt_BR: Consulta
+  human_description:
+    en_US: "What the endpoint should do, in plain words, e.g. 'company enrichment by domain'. Empty lists every data source."
+    zh_Hans: "用自然语言描述要做的事，如 'company enrichment by domain'。留空则列出全部数据源。"
+    ja_JP: "エンドポイントにさせたいことを平易な言葉で（例: 'company enrichment by domain'）。空にするとすべてのデータソースを一覧します。"
+    pt_BR: "O que o endpoint deve fazer, em palavras simples, por exemplo 'company enrichment by domain'. Vazio lista todas as fontes de dados."
+  llm_description: "The capability in plain words, e.g. 'enrich a person by email', 'domain rating', 'google search results'. Say what you want done, not a vendor name, unless the user named the vendor."
+  form: llm
+- name: limit
+  type: number
+  required: false
+  default: 5
+  min: 1
+  max: 20
+  label:
+    en_US: Page size
+    zh_Hans: 每页条数
+    ja_JP: ページサイズ
+    pt_BR: Tamanho da página
+  human_description:
+    en_US: Endpoints per page, 1 to 20 (default 5).
+    zh_Hans: 每页端点数，1 到 20（默认 5）。
+    ja_JP: 1ページあたりのエンドポイント数、1〜20（デフォルト5）。
+    pt_BR: Endpoints por página, de 1 a 20 (padrão 5).
+  llm_description: Endpoints per page, 1 to 20. Default 5.
+  form: llm
+- name: cursor
+  type: string
+  required: false
+  label:
+    en_US: Cursor
+    zh_Hans: 游标
+    ja_JP: カーソル
+    pt_BR: Cursor
+  human_description:
+    en_US: The next_cursor from the previous page of the same query.
+    zh_Hans: 上一页同一查询返回的 next_cursor。
+    ja_JP: 同じクエリの前ページが返したnext_cursor。
+    pt_BR: O next_cursor da página anterior da mesma consulta.
+  llm_description: The next_cursor value from the previous page. The cursor is bound to the query.
+  form: llm
 extra:
   python:
     source: tools/search.py

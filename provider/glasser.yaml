@@ -1,42 +1,49 @@
 identity:
-  author: "glasser-ai"
-  name: "glasser"
+  author: glasser-ai
+  name: glasser
   label:
-    en_US: "Glasser"
-    zh_Hans: "Glasser"
+    en_US: Glasser
+    zh_Hans: Glasser
+    ja_JP: Glasser
+    pt_BR: Glasser
   description:
-    en_US: "Paid third-party API endpoints for agents through one Glasser Key. Search the data sources, inspect the exact price, run, pay per call."
-    zh_Hans: "一个 Glasser Key 调用付费第三方 API：搜索数据源、查看精确价格、执行、按次付费。"
-  icon: "icon.svg"
+    en_US: Paid third-party API endpoints for agents through one Glasser Key. Search the data sources, inspect the exact price, run, pay per call.
+    zh_Hans: 一个 Glasser Key 调用付费第三方 API：搜索数据源、查看精确价格、执行、按次付费。
+    ja_JP: Glasser Keyひとつでエージェントから有料サードパーティAPIエンドポイントを利用。データソースを検索し、正確な価格を確認し、実行し、呼び出しごとに支払います。
+    pt_BR: Endpoints de API de terceiros pagos para agentes com uma única Glasser Key. Pesquise as fontes de dados, consulte o preço exato, execute e pague por chamada.
+  icon: icon.svg
   tags:
-    - search
-    - business
-    - utilities
-
+  - search
+  - business
+  - utilities
 credentials_for_provider:
   glasser_api_key:
     type: secret-input
     required: true
     label:
-      en_US: "Glasser Key"
-      zh_Hans: "Glasser Key"
+      en_US: Glasser Key
+      zh_Hans: Glasser Key
+      ja_JP: Glasser Key
+      pt_BR: Glasser Key
     placeholder:
       en_US: "gl_..."
       zh_Hans: "gl_..."
+      ja_JP: "gl_..."
+      pt_BR: "gl_..."
     help:
-      en_US: "Create a Key in the Glasser console. Validation calls the free balance endpoint and charges nothing."
-      zh_Hans: "在 Glasser 控制台创建 Key。校验只调用免费的余额接口，不产生费用。"
+      en_US: Create a Key in the Glasser console. Validation calls the free balance endpoint and charges nothing.
+      zh_Hans: 在 Glasser 控制台创建 Key。校验只调用免费的余额接口，不产生费用。
+      ja_JP: GlasserコンソールでKeyを作成してください。検証は無料の残高エンドポイントを呼び出すだけで、課金されません。
+      pt_BR: Crie uma Key no console do Glasser. A validação chama o endpoint gratuito de saldo e não cobra nada.
     url: "https://app.glasser.ai/keys"
-
 tools:
-  - tools/search.yaml
-  - tools/inspect.yaml
-  - tools/run.yaml
-  - tools/runs_get.yaml
-  - tools/runs_list.yaml
-  - tools/runs_stop.yaml
-  - tools/balance.yaml
-
+- tools/search.yaml
+- tools/inspect.yaml
+- tools/run.yaml
+- tools/runs_get.yaml
+- tools/runs_list.yaml
+- tools/runs_stop.yaml
+- tools/balance.yaml
 extra:
   python:
     source: provider/glasser.py

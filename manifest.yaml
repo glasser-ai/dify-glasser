@@ -5,25 +5,29 @@ name: glasser
 label:
   en_US: Glasser
   zh_Hans: Glasser
+  ja_JP: Glasser
+  pt_BR: Glasser
 description:
   en_US: Paid third-party API endpoints for agents through one Glasser Key. Search the data sources, inspect the exact price, run, pay per call.
   zh_Hans: 一个 Glasser Key 调用付费第三方 API：搜索数据源、查看精确价格、执行、按次付费。
+  ja_JP: Glasser Keyひとつでエージェントから有料サードパーティAPIエンドポイントを利用。データソースを検索し、正確な価格を確認し、実行し、呼び出しごとに支払います。
+  pt_BR: Endpoints de API de terceiros pagos para agentes com uma única Glasser Key. Pesquise as fontes de dados, consulte o preço exato, execute e pague por chamada.
 icon: icon.svg
-repo: https://github.com/glasser-ai/dify-glasser
+repo: "https://github.com/glasser-ai/dify-glasser"
 resource:
   memory: 268435456
   permission: {}
 plugins:
   tools:
-    - provider/glasser.yaml
+  - provider/glasser.yaml
 meta:
   version: 0.0.1
   arch:
-    - amd64
-    - arm64
+  - amd64
+  - arm64
   runner:
     language: python
-    version: "3.12"
+    version: '3.12'
     entrypoint: main
 created_at: 2026-09-17T11:27:01+08:00
 privacy: PRIVACY.md

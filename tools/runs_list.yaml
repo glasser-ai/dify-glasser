@@ -1,88 +1,112 @@
 identity:
-  name: "runs_list"
-  author: "glasser-ai"
+  name: runs_list
+  author: glasser-ai
   label:
-    en_US: "List runs"
-    zh_Hans: "列出 runs"
+    en_US: List runs
+    zh_Hans: 列出 runs
+    ja_JP: runを一覧
+    pt_BR: Listar runs
 description:
   human:
     en_US: "This workspace's runs, newest first, with optional filters on status, provider and endpoint. Cursor-paginated."
-    zh_Hans: "本 Workspace 的 runs，按时间倒序，可按状态、provider、endpoint 过滤。游标分页。"
+    zh_Hans: 本 Workspace 的 runs，按时间倒序，可按状态、provider、endpoint 过滤。游标分页。
+    ja_JP: このワークスペースのrunを新しい順に一覧します。ステータス、provider、endpointで絞り込めます。カーソルページネーション。
+    pt_BR: Os runs deste workspace, mais recentes primeiro, com filtros opcionais por status, provider e endpoint. Paginado por cursor.
   llm: "List this workspace's runs, newest first; filter by status, provider, or endpoint. Cursor-paginated: pass next_cursor back as cursor for the next page."
 parameters:
-  - name: limit
-    type: number
-    required: false
-    default: 10
-    min: 1
+- name: limit
+  type: number
+  required: false
+  default: 10
+  min: 1
+  label:
+    en_US: Page size
+    zh_Hans: 每页条数
+    ja_JP: ページサイズ
+    pt_BR: Tamanho da página
+  human_description:
+    en_US: Runs per page (default 10).
+    zh_Hans: 每页 run 数（默认 10）。
+    ja_JP: 1ページあたりのrun数（デフォルト10）。
+    pt_BR: Runs por página (padrão 10).
+  llm_description: Runs per page. Default 10.
+  form: llm
+- name: cursor
+  type: string
+  required: false
+  label:
+    en_US: Cursor
+    zh_Hans: 游标
+    ja_JP: カーソル
+    pt_BR: Cursor
+  human_description:
+    en_US: The next_cursor from the previous page.
+    zh_Hans: 上一页返回的 next_cursor。
+    ja_JP: 前ページが返したnext_cursor。
+    pt_BR: O next_cursor da página anterior.
+  llm_description: The next_cursor value from the previous page.
+  form: llm
+- name: status
+  type: select
+  required: false
+  options:
+  - value: "QUEUED"
     label:
-      en_US: "Page size"
-      zh_Hans: "每页条数"
-    human_description:
-      en_US: "Runs per page (default 10)."
-      zh_Hans: "每页 run 数（默认 10）。"
-    llm_description: "Runs per page. Default 10."
-    form: llm
-  - name: cursor
-    type: string
-    required: false
+      en_US: "QUEUED"
+  - value: "RUNNING"
     label:
-      en_US: "Cursor"
-      zh_Hans: "游标"
-    human_description:
-      en_US: "The next_cursor from the previous page."
-      zh_Hans: "上一页返回的 next_cursor。"
-    llm_description: "The next_cursor value from the previous page."
-    form: llm
-  - name: status
-    type: select
-    required: false
-    options:
-      - value: QUEUED
-        label:
-          en_US: "QUEUED"
-      - value: RUNNING
-        label:
-          en_US: "RUNNING"
-      - value: COMPLETED
-        label:
-          en_US: "COMPLETED"
-      - value: FAILED
-        label:
-          en_US: "FAILED"
-      - value: STOPPED
-        label:
-          en_US: "STOPPED"
+      en_US: "RUNNING"
+  - value: "COMPLETED"
     label:
-      en_US: "Status"
-      zh_Hans: "状态"
-    human_description:
-      en_US: "Only runs in this status."
-      zh_Hans: "只列出该状态的 runs。"
-    llm_description: "Filter by status: QUEUED, RUNNING, COMPLETED, FAILED or STOPPED."
-    form: llm
-  - name: provider
-    type: string
-    required: false
+      en_US: "COMPLETED"
+  - value: "FAILED"
     label:
-      en_US: "Provider"
-      zh_Hans: "Provider"
-    human_description:
-      en_US: "Only runs of this provider slug."
-      zh_Hans: "只列出该 provider 的 runs。"
-    llm_description: "Filter by provider slug."
-    form: llm
-  - name: endpoint
-    type: string
-    required: false
+      en_US: "FAILED"
+  - value: "STOPPED"
     label:
-      en_US: "Endpoint"
-      zh_Hans: "Endpoint"
-    human_description:
-      en_US: "Only runs of this endpoint path."
-      zh_Hans: "只列出该 endpoint 的 runs。"
-    llm_description: "Filter by endpoint path."
-    form: llm
+      en_US: "STOPPED"
+  label:
+    en_US: Status
+    zh_Hans: 状态
+    ja_JP: ステータス
+    pt_BR: Status
+  human_description:
+    en_US: Only runs in this status.
+    zh_Hans: 只列出该状态的 runs。
+    ja_JP: このステータスのrunのみ。
+    pt_BR: Somente runs neste status.
+  llm_description: "Filter by status: QUEUED, RUNNING, COMPLETED, FAILED or STOPPED."
+  form: llm
+- name: provider
+  type: string
+  required: false
+  label:
+    en_US: Provider
+    zh_Hans: Provider
+    ja_JP: Provider
+    pt_BR: Provider
+  human_description:
+    en_US: Only runs of this provider slug.
+    zh_Hans: 只列出该 provider 的 runs。
+    ja_JP: このproviderスラッグのrunのみ。
+    pt_BR: Somente runs deste slug de provider.
+  llm_description: Filter by provider slug.
+  form: llm
+- name: endpoint
+  type: string
+  required: false
+  label:
+    en_US: Endpoint
+    zh_Hans: Endpoint
+    ja_JP: Endpoint
+    pt_BR: Endpoint
+  human_description:
+    en_US: Only runs of this endpoint path.
+    zh_Hans: 只列出该 endpoint 的 runs。
+    ja_JP: このendpointパスのrunのみ。
+    pt_BR: Somente runs deste caminho de endpoint.
+  llm_description: Filter by endpoint path.
+  form: llm
 extra:
   python:
     source: tools/runs_list.py
