@@ -83,7 +83,9 @@ def test_company_routes():
 
 def test_seo_routes():
     used, _, body = build("seo_research", "keyword_overview", keywords="espresso machine", country="gb")
-    assert used == "semrush" and body == {"keyword": "espresso machine", "country": "GB"}
+    assert used == "semrush" and body == {"keyword": "espresso machine", "country": "UK"}
+    assert build("seo_research", "keyword_overview", keywords="x", country="UK")[2]["country"] == "UK"
+    assert build("seo_research", "keyword_overview", keywords="x", country="de")[2]["country"] == "DE"
     used, _, body = build("seo_research", "keyword_overview", keywords="a, b, c")
     assert used == "serpstat" and body == {"se": "g_us", "keywords": ["a", "b", "c"]}
     _, _, body = build("seo_research", "keyword_ideas", keywords="phone", limit=7)

@@ -58,4 +58,6 @@ def ahrefs_country(country: Optional[str]) -> str:
 
 
 def semrush_country(country: Optional[str]) -> str:
-    return iso2(country).upper()
+    """Semrush spells the United Kingdom UK, not GB (verified against its docs)."""
+    code = iso2(country)
+    return "UK" if code == "gb" else code.upper()

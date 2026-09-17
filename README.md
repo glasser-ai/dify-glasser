@@ -1,7 +1,7 @@
 # Glasser
 
 **Author:** glasser-ai
-**Version:** 0.3.0
+**Version:** 0.3.1
 **Type:** tool
 
 [简体中文](README_zh_Hans.md)
