@@ -1,14 +1,14 @@
 # Glasser
 
 **Author:** glasser-ai
-**Version:** 0.2.1
+**Version:** 0.3.0
 **Type:** tool
 
 [简体中文](README_zh_Hans.md)
 
-Paid third-party API endpoints for Dify agents and workflows through **one Glasser Key**: search the data sources, inspect the exact price, run, pay per call. No signup at each vendor.
+Premium data for Dify agents and workflows through **one Glasser Key**: find people, company intelligence, SEO research, web research and social research, backed by Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa, ScrapeCreators and more. The agent says what data it wants; Glasser decides which provider serves it. Pay per call, no signup at each vendor.
 
-Glasser is a broker. It sells runnable third-party API operations ("endpoints") under a single Key. Your agent searches the catalog, inspects an endpoint's contract and price, and runs it. The response is the provider's own output, with the exact charge and a link to the run in the Glasser console.
+Glasser is a broker. It sells runnable third-party API operations under a single Key. Each tool call becomes one Glasser run; the response is the provider's own output, with the exact charge and a link to the run in the Glasser console.
 
 ## Tools
 
@@ -22,7 +22,7 @@ Five capability tools cover the common jobs. Each takes an `action` and a `provi
 | **Web Research** (`web_research`) | Web, news, places, scholar, shopping, image and video search; read a page; neural search, answers, similar pages | Serper, SerpApi, Exa, DataForSEO |
 | **Social Research** (`social_research`) | Reddit, X, YouTube, TikTok, Instagram, LinkedIn: search posts, read profiles and channels, find social accounts | ScrapeCreators, Apify, TikHub |
 
-Seven catalog tools reach the rest of the 1,400+ endpoints and are the same verbs as the Glasser MCP server and CLI: `search` the data sources, `inspect` an endpoint's contract and price, `run` it, `runs_get`, `runs_list`, `runs_stop`, `balance`.
+The rest of the 1,400+ endpoints in the Glasser catalog are reachable through the Glasser MCP server (`https://api.glasser.ai/mcp`, which Dify can add directly as an MCP tool) and the CLI.
 
 ### How a capability call works
 
@@ -97,7 +97,7 @@ Seven catalog tools reach the rest of the 1,400+ endpoints and are the same verb
 | `linkedin_company` | scrapecreators | — |
 | `find_profiles` | scrapecreators | — |
 
-`provider = auto` picks are made on price and coverage. Every endpoint above is in the Glasser catalog; `inspect` shows its current price.
+`provider = auto` picks are made on price and coverage. Every endpoint above is in the Glasser catalog, where its current price is shown.
 
 ### Example prompts
 
@@ -121,11 +121,11 @@ The plugin makes outbound HTTPS (port 443) requests to **`api.glasser.ai` only**
 
 ## Usage notes
 
-- **Capability tools price by their route.** Each call is one paid run at the routed endpoint's published price; the `routed` block in the result names it. For catalog tools, inspect before the first run: the price shown by `inspect` is what a normal COMPLETED call costs. The charge clauses list the exceptions, for example `NO_RESULT $0.00` means an empty answer is free. The charge rule may read volume parameters in the input (`num`, `size`, `limit`, arrays of queries), so start small.
+- **Each call is one paid run** at the routed endpoint's published price; the `routed` block in the result names the endpoint. The routing table below lists which endpoint each action uses. The charge clauses list the exceptions, for example `NO_RESULT $0.00` means an empty answer is free. The charge rule may read volume parameters in the input (`num`, `size`, `limit`, arrays of queries), so start small.
 - **Two indicators, not one.** A run's status and the provider's response are separate. A COMPLETED run whose provider answered 404 ("person not found") is a normal outcome, charged per the endpoint's clauses. A FAILED run can carry a non-zero charge when the clauses say so.
-- **Retries never charge twice.** Every run carries an idempotency key. Pass your own UUID, or let the plugin generate one; the result echoes it as `idempotency_key`. Retry with the same key after a timeout and you get the original run back. The plugin also reuses the key when it retries a dropped connection itself.
-- **Async endpoints.** `inspect` shows the run mode. A sync endpoint returns the finished run in the same call. For an async endpoint, `run` waits by default (up to the configurable timeout, 180 seconds) and otherwise returns the in-flight run; poll it with `runs_get`.
-- **Money is an exact decimal string** (`"0.0005"`), never a float. Do not do float arithmetic on `charge_usd`, `balance_usd` or the price.
+- **Retries never charge twice.** Every run carries an idempotency key the plugin generates and echoes as `idempotency_key`; the plugin reuses it when it retries a dropped connection, so a retry reads the original run.
+- **Async endpoints** (the Apify routes) are waited for, up to 180 seconds. A run still in flight after that is returned with its status and run URL.
+- **Money is an exact decimal string** (`"0.0005"`), never a float. Do not do float arithmetic on `charge_usd`.
 - **Rate limits.** A `rate_limited` error carries `retry_after_ms`. The plugin waits that long once and retries the same call; if it is still limited, the error is returned as is.
 - **Errors are the API's own envelope**: `{"error": {"code", "message", ...}, "request_id"}`. `insufficient_balance` means the workspace cannot cover the price; top up in the console instead of retrying.
 
@@ -137,17 +137,17 @@ The plugin makes outbound HTTPS (port 443) requests to **`api.glasser.ai` only**
 | `RUNNING` | Dispatched, provider has not answered yet |
 | `COMPLETED` | Terminal. The provider answered (its answer may still be a "not found") |
 | `FAILED` | Terminal. No usable provider answer; the `failure` block says why |
-| `STOPPED` | Terminal. Stopped before dispatch, charge 0. A run already sent to the provider completes and is charged |
+| `STOPPED` | Terminal. Stopped in the Glasser console before dispatch, charge 0 |
 
 ## Privacy
 
-Tool inputs (queries, provider and endpoint names, run inputs, run ids) and the Key are sent to `api.glasser.ai` to fulfil each request. The plugin stores nothing and collects no telemetry. Requests identify the plugin by name and version in the `User-Agent` header. See [PRIVACY.md](PRIVACY.md).
+Tool inputs (queries, domains, names, emails, URLs) and the Key are sent to `api.glasser.ai` to fulfil each request. The plugin stores nothing and collects no telemetry. Requests identify the plugin by name and version in the `User-Agent` header. See [PRIVACY.md](PRIVACY.md).
 
 ## Development
 
 ```sh
 uv sync                      # Python 3.12, dify_plugin, pytest
-uv run pytest                # offline tests, no network
+uv run pytest                # offline routing tests, no network
 dify plugin package .        # builds glasser.difypkg
 ```
 

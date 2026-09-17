@@ -42,13 +42,6 @@ tools:
 - tools/people_search.yaml
 - tools/seo_research.yaml
 - tools/social_research.yaml
-- tools/search.yaml
-- tools/inspect.yaml
-- tools/run.yaml
-- tools/runs_get.yaml
-- tools/runs_list.yaml
-- tools/runs_stop.yaml
-- tools/balance.yaml
 extra:
   python:
     source: provider/glasser.py

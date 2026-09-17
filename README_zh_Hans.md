@@ -1,14 +1,14 @@
 # Glasser
 
 **作者：** glasser-ai
-**版本：** 0.2.1
+**版本：** 0.3.0
 **类型：** tool
 
 [English](README.md)
 
-用**一个 Glasser Key** 在 Dify 的 Agent 和 Workflow 里调用付费第三方 API 端点：搜索数据源、查看精确价格、执行、按次付费。不需要在每个供应商处注册。
+用**一个 Glasser Key** 给 Dify 的 Agent 和 Workflow 提供高级数据：找人、公司情报、SEO 研究、网页研究、社交研究，背后是 Apollo、People Data Labs、Hunter、BuiltWith、DataForSEO、Semrush、Ahrefs、Serper、Exa、ScrapeCreators 等。Agent 只说要什么数据，Glasser 决定由哪家 provider 提供。按次付费，不需要在每个供应商处注册。
 
-Glasser 是一个经纪层。它以单个 Key 出售可执行的第三方 API 操作（endpoint）。你的 Agent 搜索目录，查看端点的契约和价格，然后执行。返回的是 provider 的原始输出，附带精确扣费和 Glasser 控制台里这次 run 的链接。
+Glasser 是一个经纪层。它以单个 Key 出售可执行的第三方 API 操作。每次工具调用就是一次 Glasser run；返回的是 provider 的原始输出，附带精确扣费和 Glasser 控制台里这次 run 的链接。
 
 ## 工具
 
@@ -22,7 +22,7 @@ Glasser 是一个经纪层。它以单个 Key 出售可执行的第三方 API �
 | **网页研究** (`web_research`) | 网页、新闻、地点、学术、商品、图片、视频搜索；读取网页；语义搜索、问答、相似页面 | Serper、SerpApi、Exa、DataForSEO |
 | **社交研究** (`social_research`) | Reddit、X、YouTube、TikTok、Instagram、LinkedIn：搜索帖子、读取主页和频道、查找社交账号 | ScrapeCreators、Apify、TikHub |
 
-另有七个目录工具，可触达其余 1,400 多个端点，与 Glasser 的 MCP 服务器和 CLI 是同一组动词：`search` 搜索数据源、`inspect` 查看端点契约和价格、`run` 执行、`runs_get`、`runs_list`、`runs_stop`、`balance`。
+Glasser 目录里其余 1,400 多个端点可通过 Glasser 的 MCP 服务器（`https://api.glasser.ai/mcp`，Dify 可直接作为 MCP 工具添加）和 CLI 使用。
 
 ### 业务级调用如何工作
 
@@ -54,10 +54,10 @@ Glasser 是一个经纪层。它以单个 Key 出售可执行的第三方 API �
 
 ## 使用说明
 
-- **首次执行前先 inspect。** inspect 显示的价格是一次正常 COMPLETED 调用的费用。计费条款列出例外，例如 `NO_RESULT $0.00` 表示空结果免费。计费规则可能读取输入里的数量参数（`num`、`size`、`limit`、查询数组），所以从小量开始。
+- **每次调用就是一次付费 run**，按路由到的端点的公布价格计费；结果里的 `routed` 块说明是哪个端点。`limit` 保持小量：计费规则可能读取它。
 - **两个指标，不是一个。** run 的状态和 provider 的回答是两回事。provider 回 404（"person not found"）的 COMPLETED run 是正常结果，按端点条款计费。条款允许时，FAILED 的 run 也可能有非零扣费。
-- **重试绝不重复扣费。** 每个 run 都带幂等键。你可以传自己的 UUID，或者让插件生成，结果里以 `idempotency_key` 回显。超时后用同一个键重试，返回的是原来的 run。插件自己重试断开的连接时也复用这个键。
-- **异步端点。** `inspect` 会显示运行模式。同步端点在同一次调用里返回完成的 run。异步端点默认等待（超时可配置，默认 180 秒），超时则按当前状态返回，用 `runs_get` 继续轮询。
+- **重试绝不重复扣费。** 每个 run 都带插件生成的幂等键（结果里以 `idempotency_key` 回显）；插件重试断开的连接时复用它，重试读到的是原来的 run。
+- **异步端点**（Apify 路由）会等待最多 180 秒，超时则按当前状态和 run URL 返回。
 - **金额是精确的小数字符串**（`"0.0005"`），不是浮点数。不要对 `charge_usd`、`balance_usd` 或价格做浮点运算。
 - **限流。** `rate_limited` 错误带 `retry_after_ms`。插件等待这么久后重试同一调用一次；仍被限流则原样返回错误。
 - **错误就是 API 自己的信封**：`{"error": {"code", "message", ...}, "request_id"}`。`insufficient_balance` 表示 Workspace 余额不足以覆盖价格，去控制台充值，不要重试。
@@ -70,11 +70,11 @@ Glasser 是一个经纪层。它以单个 Key 出售可执行的第三方 API �
 | `RUNNING` | 已派发，provider 尚未回答 |
 | `COMPLETED` | 终态。provider 已回答（回答本身仍可能是 "not found"） |
 | `FAILED` | 终态。没有可用的 provider 回答；`failure` 字段说明原因 |
-| `STOPPED` | 终态。派发前被停止，扣费为 0。已发给 provider 的 run 会正常完成并扣费 |
+| `STOPPED` | 终态。在 Glasser 控制台派发前停止，扣费为 0 |
 
 ## 隐私
 
-工具输入（查询、provider 和 endpoint 名称、run 输入、run id）和 Key 会发送到 `api.glasser.ai` 以完成每次请求。插件不存储任何数据，不收集遥测。请求在 `User-Agent` 头里标明插件名称和版本。详见 [PRIVACY.md](PRIVACY.md)。
+工具输入（查询、域名、姓名、邮箱、URL）和 Key 会发送到 `api.glasser.ai` 以完成每次请求。插件不存储任何数据，不收集遥测。请求在 `User-Agent` 头里标明插件名称和版本。详见 [PRIVACY.md](PRIVACY.md)。
 
 ## 开发
 
