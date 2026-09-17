@@ -56,8 +56,11 @@ jobs:
           cd dify-plugins
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Branch from the upstream main, not the fork's copy of it, which lags.
+          git remote add upstream https://github.com/langgenius/dify-plugins.git
+          git fetch --depth 1 upstream main
           BRANCH="${{ steps.manifest.outputs.name }}-${{ steps.manifest.outputs.version }}"
-          git checkout -b "$BRANCH"
+          git checkout -b "$BRANCH" upstream/main
           git add .
           git commit -m "Update plugin: ${{ steps.manifest.outputs.author }}/${{ steps.manifest.outputs.name }} v${{ steps.manifest.outputs.version }}"
           git push -u origin "$BRANCH" --force
