@@ -7,10 +7,10 @@ identity:
     ja_JP: Glasser
     pt_BR: Glasser
   description:
-    en_US: Paid third-party API endpoints for agents through one Glasser Key. Search the data sources, inspect the exact price, run, pay per call.
-    zh_Hans: 一个 Glasser Key 调用付费第三方 API：搜索数据源、查看精确价格、执行、按次付费。
-    ja_JP: Glasser Keyひとつでエージェントから有料サードパーティAPIエンドポイントを利用。データソースを検索し、正確な価格を確認し、実行し、呼び出しごとに支払います。
-    pt_BR: Endpoints de API de terceiros pagos para agentes com uma única Glasser Key. Pesquise as fontes de dados, consulte o preço exato, execute e pague por chamada.
+    en_US: Premium data for agents through one Glasser Key — web research, company intelligence, B2B prospecting, keyword & SEO research and social listening. The agent says what data it needs; Glasser picks the provider among Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa and more. Pay per call.
+    zh_Hans: 一个 Glasser Key 即可为智能体提供高级数据——网络研究、公司情报、客户开发、关键词与 SEO、社交聆听。Agent 只说要什么数据，Glasser 在 Apollo、People Data Labs、Hunter、BuiltWith、DataForSEO、Semrush、Ahrefs、Serper、Exa 等数据源中选择；按次付费。
+    ja_JP: Glasser Keyひとつでエージェントにプレミアムデータを——ウェブリサーチ、企業インテリジェンス、B2Bプロスペクティング、キーワードとSEO、ソーシャルリスニング。エージェントは必要なデータを伝えるだけで、GlasserがApollo、People Data Labs、Hunter、BuiltWith、DataForSEO、Semrush、Ahrefs、Serper、Exaなどからプロバイダーを選択。呼び出しごとの従量課金。
+    pt_BR: Dados premium para agentes com uma única Glasser Key — pesquisa na web, inteligência de empresas, prospecção B2B, palavras-chave e SEO e escuta social. O agente diz que dados precisa; o Glasser escolhe o provedor entre Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa e outros. Pague por chamada.
   icon: icon.svg
   tags:
   - search
@@ -26,15 +26,15 @@ credentials_for_provider:
       ja_JP: Glasser Key
       pt_BR: Glasser Key
     placeholder:
-      en_US: "gl_..."
-      zh_Hans: "gl_..."
-      ja_JP: "gl_..."
-      pt_BR: "gl_..."
+      en_US: gl_...
+      zh_Hans: gl_...
+      ja_JP: gl_...
+      pt_BR: gl_...
     help:
-      en_US: Create a Key in the Glasser console. Validation calls the free balance endpoint and charges nothing.
-      zh_Hans: 在 Glasser 控制台创建 Key。校验只调用免费的余额接口，不产生费用。
-      ja_JP: GlasserコンソールでKeyを作成してください。検証は無料の残高エンドポイントを呼び出すだけで、課金されません。
-      pt_BR: Crie uma Key no console do Glasser. A validação chama o endpoint gratuito de saldo e não cobra nada.
+      en_US: Create a Key at app.glasser.ai. One Key covers every data source, pay per call, no signup at each vendor. Validation calls the free balance endpoint and charges nothing.
+      zh_Hans: 在 app.glasser.ai 创建 Key。一个 Key 覆盖全部数据源，按次付费，无需在各供应商注册。校验只调用免费的余额接口，不产生费用。
+      ja_JP: app.glasser.aiでKeyを作成。1つのKeyで全データソースを利用、呼び出しごとの従量課金、各ベンダーへの登録は不要。検証は無料の残高エンドポイントを呼ぶだけで課金されません。
+      pt_BR: Crie uma Key em app.glasser.ai. Uma Key cobre todas as fontes de dados, pagamento por chamada, sem cadastro em cada fornecedor. A validação chama o endpoint gratuito de saldo e não cobra nada.
     url: "https://app.glasser.ai/keys"
 tools:
 - tools/web_research.yaml

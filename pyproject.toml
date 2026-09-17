@@ -1,6 +1,6 @@
 [project]
 name = "dify-glasser"
-version = "0.3.1"
+version = "0.3.2"
 description = "Dify tool plugin for Glasser: paid third-party API endpoints through one Key."
 requires-python = ">=3.12"
 dependencies = [

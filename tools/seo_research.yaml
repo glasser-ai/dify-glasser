@@ -2,16 +2,16 @@ identity:
   name: seo_research
   author: glasser-ai
   label:
-    en_US: SEO Research
-    zh_Hans: SEO 研究
-    ja_JP: SEOリサーチ
-    pt_BR: Pesquisa de SEO
+    en_US: Keywords & SEO
+    zh_Hans: 关键词与 SEO
+    ja_JP: キーワードとSEO
+    pt_BR: Palavras-chave e SEO
 description:
   human:
-    en_US: "Keyword volume and difficulty, keyword ideas, a domain's organic traffic and ranking keywords, backlinks and referring domains, domain rating, Google results. Semrush, DataForSEO, Ahrefs and Serpstat behind one Key."
-    zh_Hans: 关键词量与难度、关键词拓展、域名自然流量与排名关键词、外链与引荐域名、域名评分、Google 结果。一个 Key 背后是 Semrush、DataForSEO、Ahrefs、Serpstat。
-    ja_JP: キーワードのボリュームと難易度、キーワード候補、ドメインのオーガニックトラフィックとランキングキーワード、被リンクと参照ドメイン、ドメインレーティング、Google結果。Semrush、DataForSEO、Ahrefs、Serpstatを1つのKeyで。
-    pt_BR: Volume e dificuldade de palavras-chave, ideias de palavras-chave, tráfego orgânico e palavras-chave de um domínio, backlinks e domínios de referência, domain rating, resultados do Google. Semrush, DataForSEO, Ahrefs e Serpstat com uma única Key.
+    en_US: "SEO data from Semrush, DataForSEO, Ahrefs and Serpstat via Glasser — keyword volume and difficulty, keyword ideas, a domain's organic traffic and ranking keywords, backlinks and referring domains, domain rating, Google results. For content strategy, SEO audits and competitor keyword analysis."
+    zh_Hans: 由 Glasser 提供的 Semrush、DataForSEO、Ahrefs 与 Serpstat SEO 数据——关键词搜索量与难度、关键词拓展、域名自然流量与排名关键词、外链与引荐域名、域名评分、Google 结果。适用于内容策略、SEO 审计与竞品关键词分析。
+    ja_JP: Glasser経由のSemrush、DataForSEO、Ahrefs、SerpstatによるSEOデータ——キーワードのボリュームと難易度、キーワード候補、ドメインのオーガニックトラフィックとランキングキーワード、被リンクと参照ドメイン、ドメインレーティング、Google結果。コンテンツ戦略、SEO監査、競合キーワード分析に。
+    pt_BR: Dados de SEO da Semrush, DataForSEO, Ahrefs e Serpstat via Glasser — volume e dificuldade de palavras-chave, ideias de palavras-chave, tráfego orgânico e palavras-chave de um domínio, backlinks e domínios de referência, domain rating, resultados do Google. Para estratégia de conteúdo, auditorias de SEO e análise de palavras-chave da concorrência.
   llm: "SEO data. Keyword actions take keywords (comma-separated): 'keyword_overview' (volume, difficulty, CPC), 'keyword_ideas' (related terms), 'serp' (Google organic results for the first keyword). Domain actions take domain: 'domain_overview' (organic traffic and keyword count), 'ranked_keywords', 'backlinks_overview' (totals), 'backlinks' (rows), 'referring_domains', 'domain_rating' (Ahrefs DR, $0.0005). country is a two-letter code, default us. provider 'auto' picks the cheapest good source per action (semrush for one keyword, serpstat for several, dataforseo for domains); name a provider only when the user asks. Each call is one paid run; report the charge and the run URL."
 parameters:
 - name: action

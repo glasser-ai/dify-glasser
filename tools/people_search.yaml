@@ -2,16 +2,16 @@ identity:
   name: people_search
   author: glasser-ai
   label:
-    en_US: Find People
-    zh_Hans: 找人
-    ja_JP: 人物検索
-    pt_BR: Encontrar pessoas
+    en_US: Find Prospects
+    zh_Hans: 客户开发
+    ja_JP: プロスペクト検索
+    pt_BR: Prospecção
 description:
   human:
-    en_US: Find B2B people and decision makers, enrich one person, or find a work email. Apollo, People Data Labs, Hunter, Prospeo, LeadMagic and ZoomInfo behind one Key; provider=auto picks for you.
-    zh_Hans: 查找 B2B 人物和决策者、补全一个人、或查找工作邮箱。一个 Key 背后是 Apollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfo；provider=auto 自动选择。
-    ja_JP: B2Bの人物や意思決定者を検索、1人を補完、仕事用メールを検索。Apollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfoを1つのKeyで。provider=autoで自動選択。
-    pt_BR: Encontre pessoas B2B e decisores, enriqueça uma pessoa ou encontre um e-mail de trabalho. Apollo, People Data Labs, Hunter, Prospeo, LeadMagic e ZoomInfo com uma única Key; provider=auto escolhe por você.
+    en_US: "B2B people data from Apollo, People Data Labs, Hunter, Prospeo, LeadMagic and ZoomInfo via Glasser — search contacts by title, seniority, location or employer, enrich one person's profile, find a work email. For building target lists and reaching decision makers."
+    zh_Hans: 由 Glasser 提供的 Apollo、People Data Labs、Hunter、Prospeo、LeadMagic 与 ZoomInfo B2B 人物数据——按职位、级别、地区或雇主搜索联系人，补全一个人的资料，查找工作邮箱。适用于建立目标客户名单与找到决策者。
+    ja_JP: Glasser経由のApollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfoによるB2B人物データ——役職・レベル・所在地・雇用主で連絡先を検索、1人のプロフィールを補完、仕事用メールを検索。ターゲットリスト作成と意思決定者へのアプローチに。
+    pt_BR: Dados de pessoas B2B da Apollo, People Data Labs, Hunter, Prospeo, LeadMagic e ZoomInfo via Glasser — pesquise contatos por cargo, senioridade, localização ou empregador, enriqueça o perfil de uma pessoa, encontre um e-mail de trabalho. Para montar listas-alvo e chegar aos decisores.
   llm: "Find B2B people. action 'search': people matching job_titles, seniorities, locations, company_domain or keywords (any combination; apollo search is free, results carry name, title and employer). action 'enrich': one known person's profile and contact data from linkedin_url, email, or full_name plus company_domain. action 'find_email': the work email of full_name at company_domain. provider 'auto' picks apollo for search and enrich, hunter for find_email; name a provider only when the user asks for one. Each call is one paid run; report the charge and the run URL."
 parameters:
 - name: action

@@ -8,10 +8,10 @@ identity:
     pt_BR: Inteligência de empresas
 description:
   human:
-    en_US: "Everything about one company from its domain: profile and firmographics, technology stack, website traffic, competitors, funding rounds, news. Apollo, PDL, Hunter, PredictLeads, BuiltWith, DataForSEO, Ahrefs and more behind one Key."
-    zh_Hans: 按域名了解一家公司：档案与画像、技术栈、网站流量、竞争对手、融资、新闻。一个 Key 背后是 Apollo、PDL、Hunter、PredictLeads、BuiltWith、DataForSEO、Ahrefs 等。
-    ja_JP: "ドメインから企業のすべてを: プロフィール、技術スタック、サイトトラフィック、競合、資金調達、ニュース。Apollo、PDL、Hunter、PredictLeads、BuiltWith、DataForSEO、Ahrefsなどを1つのKeyで。"
-    pt_BR: "Tudo sobre uma empresa a partir do domínio: perfil e firmografia, stack de tecnologia, tráfego do site, concorrentes, rodadas de investimento, notícias. Apollo, PDL, Hunter, PredictLeads, BuiltWith, DataForSEO, Ahrefs e mais com uma única Key."
+    en_US: Company data from Apollo, People Data Labs, Hunter, PredictLeads, BuiltWith, DataForSEO and Ahrefs via Glasser — from a domain, get the company profile and firmographics, technology stack, website traffic, competitors, funding rounds and news. For account research, competitive analysis and sales preparation.
+    zh_Hans: 由 Glasser 提供的 Apollo、People Data Labs、Hunter、PredictLeads、BuiltWith、DataForSEO 与 Ahrefs 公司数据——按域名获取公司档案与画像、技术栈、网站流量、竞争对手、融资与新闻。适用于目标客户研究、竞品分析与销售准备。
+    ja_JP: Glasser経由のApollo、People Data Labs、Hunter、PredictLeads、BuiltWith、DataForSEO、Ahrefsによる企業データ——ドメインから企業プロフィールと属性、技術スタック、サイトトラフィック、競合、資金調達、ニュースを取得。アカウント調査、競合分析、営業準備に。
+    pt_BR: Dados de empresas da Apollo, People Data Labs, Hunter, PredictLeads, BuiltWith, DataForSEO e Ahrefs via Glasser — a partir de um domínio, obtenha perfil e firmografia, stack de tecnologia, tráfego do site, concorrentes, rodadas de investimento e notícias. Para pesquisa de contas, análise competitiva e preparação de vendas.
   llm: "Company intelligence for one domain. action 'enrich': industry, size, revenue, HQ, funding summary. 'tech_stack': technologies the site runs. 'traffic': estimated organic traffic (dataforseo) or Similarweb-style visits (apify). 'competitors': domains competing for the same keywords, or similar companies (predictleads). 'funding': funding rounds with dates and investors. 'news': classified company events (predictleads) or Google News (serper). domain is always required. provider 'auto' picks the default per action; name one only when the user asks. Each call is one paid run; report the charge and the run URL."
 parameters:
 - name: action

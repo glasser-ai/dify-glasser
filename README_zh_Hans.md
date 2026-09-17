@@ -1,7 +1,7 @@
 # Glasser
 
 **作者：** glasser-ai
-**版本：** 0.3.1
+**版本：** 0.3.2
 **类型：** tool
 
 [English](README.md)

@@ -2,16 +2,16 @@ identity:
   name: social_research
   author: glasser-ai
   label:
-    en_US: Social Research
-    zh_Hans: 社交研究
-    ja_JP: ソーシャルリサーチ
-    pt_BR: Pesquisa social
+    en_US: Social Listening
+    zh_Hans: 社交聆听
+    ja_JP: ソーシャルリスニング
+    pt_BR: Escuta social
 description:
   human:
-    en_US: "Reddit, X, YouTube, TikTok, Instagram and LinkedIn: search posts, read a profile or channel, find someone's social accounts. ScrapeCreators, Apify and TikHub behind one Key."
-    zh_Hans: Reddit、X、YouTube、TikTok、Instagram、LinkedIn：搜索帖子、读取主页或频道、查找某人的社交账号。一个 Key 背后是 ScrapeCreators、Apify、TikHub。
-    ja_JP: "Reddit、X、YouTube、TikTok、Instagram、LinkedIn: 投稿の検索、プロフィールやチャンネルの取得、SNSアカウントの検索。ScrapeCreators、Apify、TikHubを1つのKeyで。"
-    pt_BR: "Reddit, X, YouTube, TikTok, Instagram e LinkedIn: buscar posts, ler um perfil ou canal, encontrar as contas sociais de alguém. ScrapeCreators, Apify e TikHub com uma única Key."
+    en_US: "Social data from ScrapeCreators, Apify and TikHub via Glasser — search posts and discussions across Reddit, X, YouTube, TikTok, Instagram and LinkedIn, read profiles and channels, find someone's social accounts. Read-only. For brand monitoring, topic research and creator discovery."
+    zh_Hans: 由 Glasser 提供的 ScrapeCreators、Apify 与 TikHub 社交数据——跨 Reddit、X、YouTube、TikTok、Instagram 与 LinkedIn 搜索帖子与讨论，读取主页与频道，查找某人的社交账号。只读。适用于品牌监测、话题研究与创作者发现。
+    ja_JP: Glasser経由のScrapeCreators、Apify、TikHubによるソーシャルデータ——Reddit、X、YouTube、TikTok、Instagram、LinkedInの投稿と議論を検索、プロフィールとチャンネルを取得、SNSアカウントを検索。読み取り専用。ブランドモニタリング、トピック調査、クリエイター発掘に。
+    pt_BR: Dados sociais da ScrapeCreators, Apify e TikHub via Glasser — pesquise posts e discussões no Reddit, X, YouTube, TikTok, Instagram e LinkedIn, leia perfis e canais, encontre as contas sociais de alguém. Somente leitura. Para monitoramento de marca, pesquisa de temas e descoberta de criadores.
   llm: "Public social data, read-only. Query actions take query: 'reddit_search', 'youtube_search', 'tiktok_search', 'linkedin_posts'. Handle actions take handle (no @; a subreddit name for reddit_subreddit): 'reddit_subreddit', 'x_user_tweets', 'youtube_channel', 'instagram_profile', 'find_profiles' (also needs platform). URL actions take url: 'x_tweet', 'linkedin_profile', 'linkedin_company'. provider 'auto' is scrapecreators (about $0.002 per call, sync); apify alternatives are async and priced per result. Each call is one paid run; report the charge and the run URL."
 parameters:
 - name: action
