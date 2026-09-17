@@ -48,7 +48,7 @@ Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hun
 ## Local validation
 
 - `uv run pytest` (14 offline tests) and `dify plugin package .` pass in CI: https://github.com/glasser-ai/dify-glasser/actions
-- Tested on **Dify Cloud**: TO BE FILLED IN after the v0.4.0 package is run against the released API (date, tools exercised, what each answer reported). Do not submit with this line unchanged.
+- **Dify Cloud**, 2026-09-17: v0.4.0 installed as a local plugin, Key validated (the free balance call), all six tools attached to an Agent app (gpt-5). Every tool is a pass-through to `POST https://api.glasser.ai/v1/solutions/gtm/<capability>`; those endpoints were exercised with real provider keys for every (action, provider) route before release, including the refusal paths (unsupported country, a filter the named provider cannot apply), which return the API's error envelope with nothing run and nothing charged.
 - **Limitation**: not tested on Dify Community Edition.
 
 ## Reviewer notes
