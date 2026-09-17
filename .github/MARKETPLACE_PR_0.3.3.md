@@ -4,7 +4,7 @@
 
 - **Author**: glasser-ai
 - **Plugin name**: glasser
-- **Version**: 0.3.2
+- **Version**: 0.3.3
 - **Source repository**: https://github.com/glasser-ai/dify-glasser
 - **Contact**: support@glasser.ai
 
@@ -15,7 +15,7 @@
 
 ## What changed
 
-Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa, ScrapeCreators and others) under one prepaid Key. This plugin exposes five capability tools: Find People, Company Intelligence, SEO Research, Web Research and Social Research. Each takes an `action` and a `provider`; `provider = auto` lets the plugin route to a good source for that action, and naming a provider forces it. Tool output is the Glasser API's own JSON for the run (provider output, exact charge, run URL) plus a `routed` block naming the endpoint that served it; errors are the API's error envelope; every run carries an idempotency key so a retry never charges twice.
+Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa, ScrapeCreators and others) under one prepaid Key. This plugin exposes five capability tools: Find Prospects, Company Intelligence, Keywords & SEO, Web Research and Social Media Search. Each takes an `action` and a `provider`; `provider = auto` lets the plugin route to a good source for that action, and naming a provider forces it. Tool output is the Glasser API's own JSON for the run (provider output, exact charge, run URL) plus a `routed` block naming the endpoint that served it; errors are the API's error envelope; every run carries an idempotency key so a retry never charges twice.
 
 ## Risk level
 

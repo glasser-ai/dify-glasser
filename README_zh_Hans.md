@@ -1,7 +1,7 @@
 # Glasser
 
 **作者：** glasser-ai
-**版本：** 0.3.2
+**版本：** 0.3.3
 **类型：** tool
 
 [English](README.md)
@@ -16,11 +16,11 @@ Glasser 是一个经纪层。它以单个 Key 出售可执行的第三方 API �
 
 | 工具 | Agent 能做什么 | 背后的数据源 |
 |---|---|---|
-| **找人** (`people_search`) | 按职位、级别、地区、雇主搜索人物；补全一个人；查找工作邮箱 | Apollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfo |
+| **客户开发** (`people_search`) | 按职位、级别、地区、雇主搜索人物；补全一个人；查找工作邮箱 | Apollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfo |
 | **公司情报** (`company_intelligence`) | 公司档案与画像、技术栈、网站流量、竞争对手、融资、新闻 | Apollo、PDL、Hunter、Prospeo、PredictLeads、LeadMagic、BuiltWith、DataForSEO、Ahrefs、Serpstat、Apify、Serper |
-| **SEO 研究** (`seo_research`) | 关键词指标与拓展、域名自然流量概览、排名关键词、外链、引荐域名、域名评分、Google 结果 | Semrush、DataForSEO、Ahrefs、Serpstat、Serper |
+| **关键词与 SEO** (`seo_research`) | 关键词指标与拓展、域名自然流量概览、排名关键词、外链、引荐域名、域名评分、Google 结果 | Semrush、DataForSEO、Ahrefs、Serpstat、Serper |
 | **网页研究** (`web_research`) | 网页、新闻、地点、学术、商品、图片、视频搜索；读取网页；语义搜索、问答、相似页面 | Serper、SerpApi、Exa、DataForSEO |
-| **社交研究** (`social_research`) | Reddit、X、YouTube、TikTok、Instagram、LinkedIn：搜索帖子、读取主页和频道、查找社交账号 | ScrapeCreators、Apify、TikHub |
+| **社交媒体搜索** (`social_research`) | Reddit、X、YouTube、TikTok、Instagram、LinkedIn：搜索帖子、读取主页和频道、查找社交账号 | ScrapeCreators、Apify、TikHub |
 
 Glasser 目录里其余 1,400 多个端点可通过 Glasser 的 MCP 服务器（`https://api.glasser.ai/mcp`，Dify 可直接作为 MCP 工具添加）和 CLI 使用。
 

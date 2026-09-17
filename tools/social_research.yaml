@@ -2,17 +2,17 @@ identity:
   name: social_research
   author: glasser-ai
   label:
-    en_US: Social Listening
-    zh_Hans: 社交聆听
-    ja_JP: ソーシャルリスニング
-    pt_BR: Escuta social
+    en_US: Social Media Search
+    zh_Hans: 社交媒体搜索
+    ja_JP: SNS検索
+    pt_BR: Busca em redes sociais
 description:
   human:
-    en_US: "Social data from ScrapeCreators, Apify and TikHub via Glasser — search posts and discussions across Reddit, X, YouTube, TikTok, Instagram and LinkedIn, read profiles and channels, find someone's social accounts. Read-only. For brand monitoring, topic research and creator discovery."
-    zh_Hans: 由 Glasser 提供的 ScrapeCreators、Apify 与 TikHub 社交数据——跨 Reddit、X、YouTube、TikTok、Instagram 与 LinkedIn 搜索帖子与讨论，读取主页与频道，查找某人的社交账号。只读。适用于品牌监测、话题研究与创作者发现。
-    ja_JP: Glasser経由のScrapeCreators、Apify、TikHubによるソーシャルデータ——Reddit、X、YouTube、TikTok、Instagram、LinkedInの投稿と議論を検索、プロフィールとチャンネルを取得、SNSアカウントを検索。読み取り専用。ブランドモニタリング、トピック調査、クリエイター発掘に。
-    pt_BR: Dados sociais da ScrapeCreators, Apify e TikHub via Glasser — pesquise posts e discussões no Reddit, X, YouTube, TikTok, Instagram e LinkedIn, leia perfis e canais, encontre as contas sociais de alguém. Somente leitura. Para monitoramento de marca, pesquisa de temas e descoberta de criadores.
-  llm: "Public social data, read-only. Query actions take query: 'reddit_search', 'youtube_search', 'tiktok_search', 'linkedin_posts'. Handle actions take handle (no @; a subreddit name for reddit_subreddit): 'reddit_subreddit', 'x_user_tweets', 'youtube_channel', 'instagram_profile', 'find_profiles' (also needs platform). URL actions take url: 'x_tweet', 'linkedin_profile', 'linkedin_company'. provider 'auto' is scrapecreators (about $0.002 per call, sync); apify alternatives are async and priced per result. Each call is one paid run; report the charge and the run URL."
+    en_US: Search posts, profiles and channels on Reddit, X, YouTube, TikTok, Instagram and LinkedIn, read-only. Data from ScrapeCreators.
+    zh_Hans: 搜 Reddit、X、YouTube、TikTok、Instagram、LinkedIn 上的帖子、主页与频道，只读。数据来自 ScrapeCreators。
+    ja_JP: Reddit、X、YouTube、TikTok、Instagram、LinkedInの投稿、プロフィール、チャンネルを検索。読み取り専用。データはScrapeCreatorsから。
+    pt_BR: Pesquise posts, perfis e canais no Reddit, X, YouTube, TikTok, Instagram e LinkedIn, somente leitura. Dados da ScrapeCreators.
+  llm: Search posts, profiles and channels on Reddit, X, YouTube, TikTok, Instagram and LinkedIn. Use this when the user asks what people say on social media or about a social account.
 parameters:
 - name: action
   type: select

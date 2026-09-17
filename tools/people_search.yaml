@@ -8,11 +8,11 @@ identity:
     pt_BR: Prospecção
 description:
   human:
-    en_US: "B2B people data from Apollo, People Data Labs, Hunter, Prospeo, LeadMagic and ZoomInfo via Glasser — search contacts by title, seniority, location or employer, enrich one person's profile, find a work email. For building target lists and reaching decision makers."
-    zh_Hans: 由 Glasser 提供的 Apollo、People Data Labs、Hunter、Prospeo、LeadMagic 与 ZoomInfo B2B 人物数据——按职位、级别、地区或雇主搜索联系人，补全一个人的资料，查找工作邮箱。适用于建立目标客户名单与找到决策者。
-    ja_JP: Glasser経由のApollo、People Data Labs、Hunter、Prospeo、LeadMagic、ZoomInfoによるB2B人物データ——役職・レベル・所在地・雇用主で連絡先を検索、1人のプロフィールを補完、仕事用メールを検索。ターゲットリスト作成と意思決定者へのアプローチに。
-    pt_BR: Dados de pessoas B2B da Apollo, People Data Labs, Hunter, Prospeo, LeadMagic e ZoomInfo via Glasser — pesquise contatos por cargo, senioridade, localização ou empregador, enriqueça o perfil de uma pessoa, encontre um e-mail de trabalho. Para montar listas-alvo e chegar aos decisores.
-  llm: "Find B2B people. action 'search': people matching job_titles, seniorities, locations, company_domain or keywords (any combination; apollo search is free, results carry name, title and employer). action 'enrich': one known person's profile and contact data from linkedin_url, email, or full_name plus company_domain. action 'find_email': the work email of full_name at company_domain. provider 'auto' picks apollo for search and enrich, hunter for find_email; name a provider only when the user asks for one. Each call is one paid run; report the charge and the run URL."
+    en_US: Find contacts by title, location or company, enrich a profile, get a work email. Data from Apollo and People Data Labs.
+    zh_Hans: 按职位、地区或公司找到联系人，补全资料，拿到工作邮箱。数据来自 Apollo 与 People Data Labs。
+    ja_JP: 役職・所在地・企業で連絡先を探し、プロフィールを補完し、仕事用メールを取得。データはApolloとPeople Data Labsから。
+    pt_BR: Encontre contatos por cargo, localização ou empresa, enriqueça um perfil, obtenha um e-mail de trabalho. Dados da Apollo e People Data Labs.
+  llm: Find B2B professionals and decision makers, enrich one person, or find a work email. Use this when the user needs people matching a title, seniority, location or company, or details about one known person.
 parameters:
 - name: action
   type: select

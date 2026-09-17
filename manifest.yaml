@@ -1,4 +1,4 @@
-version: 0.3.2
+version: 0.3.3
 type: plugin
 author: glasser-ai
 name: glasser
@@ -8,10 +8,10 @@ label:
   ja_JP: Glasser
   pt_BR: Glasser
 description:
-  en_US: Premium data for agents through one Glasser Key — web research, company intelligence, B2B prospecting, keyword & SEO research and social listening. The agent says what data it needs; Glasser picks the provider among Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa and more. Pay per call.
-  zh_Hans: 一个 Glasser Key 即可为智能体提供高级数据——网络研究、公司情报、客户开发、关键词与 SEO、社交聆听。Agent 只说要什么数据，Glasser 在 Apollo、People Data Labs、Hunter、BuiltWith、DataForSEO、Semrush、Ahrefs、Serper、Exa 等数据源中选择；按次付费。
-  ja_JP: Glasser Keyひとつでエージェントにプレミアムデータを——ウェブリサーチ、企業インテリジェンス、B2Bプロスペクティング、キーワードとSEO、ソーシャルリスニング。エージェントは必要なデータを伝えるだけで、GlasserがApollo、People Data Labs、Hunter、BuiltWith、DataForSEO、Semrush、Ahrefs、Serper、Exaなどからプロバイダーを選択。呼び出しごとの従量課金。
-  pt_BR: Dados premium para agentes com uma única Glasser Key — pesquisa na web, inteligência de empresas, prospecção B2B, palavras-chave e SEO e escuta social. O agente diz que dados precisa; o Glasser escolhe o provedor entre Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa e outros. Pague por chamada.
+  en_US: One Glasser Key lets an agent find people, research companies, do SEO, and search the web and social media. Data from Apollo, Semrush, Ahrefs, Serper and more, pay per call.
+  zh_Hans: 一个 Glasser Key，智能体就能找人、查公司、做 SEO、搜网页和社交媒体。数据来自 Apollo、Semrush、Ahrefs、Serper 等，按次付费。
+  ja_JP: Glasser Keyひとつで、エージェントが人物検索、企業調査、SEO、ウェブとSNSの検索を行えます。データはApollo、Semrush、Ahrefs、Serperなどから。呼び出しごとの従量課金。
+  pt_BR: Com uma única Glasser Key, o agente encontra pessoas, pesquisa empresas, faz SEO e busca na web e nas redes sociais. Dados da Apollo, Semrush, Ahrefs, Serper e outros, pagos por chamada.
 icon: icon.svg
 repo: "https://github.com/glasser-ai/dify-glasser"
 resource:
@@ -29,6 +29,6 @@ meta:
     language: python
     version: '3.12'
     entrypoint: main
-created_at: "2026-09-17T11:27:01+08:00"
+created_at: 2026-09-17T11:27:01+08:00
 privacy: PRIVACY.md
 verified: false

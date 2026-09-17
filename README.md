@@ -1,7 +1,7 @@
 # Glasser
 
 **Author:** glasser-ai
-**Version:** 0.3.2
+**Version:** 0.3.3
 **Type:** tool
 
 [简体中文](README_zh_Hans.md)
@@ -16,11 +16,11 @@ Five capability tools cover the common jobs. Each takes an `action` and a `provi
 
 | Tool | What the agent can do | Providers behind it |
 |---|---|---|
-| **Find People** (`people_search`) | Search people by title, seniority, location, employer; enrich one person; find a work email | Apollo, People Data Labs, Hunter, Prospeo, LeadMagic, ZoomInfo |
+| **Find Prospects** (`people_search`) | Search people by title, seniority, location, employer; enrich one person; find a work email | Apollo, People Data Labs, Hunter, Prospeo, LeadMagic, ZoomInfo |
 | **Company Intelligence** (`company_intelligence`) | Profile and firmographics, technology stack, website traffic, competitors, funding rounds, news | Apollo, PDL, Hunter, Prospeo, PredictLeads, LeadMagic, BuiltWith, DataForSEO, Ahrefs, Serpstat, Apify, Serper |
-| **SEO Research** (`seo_research`) | Keyword metrics and ideas, domain organic overview, ranking keywords, backlinks, referring domains, domain rating, Google results | Semrush, DataForSEO, Ahrefs, Serpstat, Serper |
+| **Keywords & SEO** (`seo_research`) | Keyword metrics and ideas, domain organic overview, ranking keywords, backlinks, referring domains, domain rating, Google results | Semrush, DataForSEO, Ahrefs, Serpstat, Serper |
 | **Web Research** (`web_research`) | Web, news, places, scholar, shopping, image and video search; read a page; neural search, answers, similar pages | Serper, SerpApi, Exa, DataForSEO |
-| **Social Research** (`social_research`) | Reddit, X, YouTube, TikTok, Instagram, LinkedIn: search posts, read profiles and channels, find social accounts | ScrapeCreators, Apify, TikHub |
+| **Social Media Search** (`social_research`) | Reddit, X, YouTube, TikTok, Instagram, LinkedIn: search posts, read profiles and channels, find social accounts | ScrapeCreators, Apify, TikHub |
 
 The rest of the 1,400+ endpoints in the Glasser catalog are reachable through the Glasser MCP server (`https://api.glasser.ai/mcp`, which Dify can add directly as an MCP tool) and the CLI.
 

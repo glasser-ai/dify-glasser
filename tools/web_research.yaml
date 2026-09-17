@@ -8,11 +8,11 @@ identity:
     pt_BR: Pesquisa na web
 description:
   human:
-    en_US: Live web research from Serper, SerpApi and Exa via Glasser — Google web, news, places, scholar, shopping, image and video search, read a web page, neural search and answers with sources. For market research, competitive analysis and fact-checking.
-    zh_Hans: 由 Glasser 提供的 Serper、SerpApi 与 Exa 实时网络研究——Google 网页、新闻、地点、学术、商品、图片与视频搜索，读取网页正文，语义搜索与带来源的问答。适用于市场研究、竞品分析与资料核实。
-    ja_JP: Glasser経由のSerper、SerpApi、Exaによるリアルタイムウェブリサーチ——Googleのウェブ、ニュース、場所、学術、ショッピング、画像、動画検索、ウェブページの読み取り、ニューラル検索と出典付き回答。市場調査、競合分析、ファクトチェックに。
-    pt_BR: Pesquisa na web em tempo real da Serper, SerpApi e Exa via Glasser — busca web, notícias, lugares, acadêmica, compras, imagens e vídeos do Google, leitura de páginas, busca neural e respostas com fontes. Para pesquisa de mercado, análise competitiva e verificação de fatos.
-  llm: "Live web data. Query actions take query: 'search' (Google organic results), 'news', 'places' (local businesses; put the area in the query), 'scholar', 'shopping', 'images', 'videos', 'answer' (a written answer with cited sources, exa). URL actions take url: 'scrape' (readable content and Markdown of one page), 'similar' (pages like this one, exa). provider 'auto' picks serper for Google-style actions and exa for answer and similar; 'exa' on search does neural search by meaning. Each call is one paid run, typically $0.001 to $0.015; report the charge and the run URL."
+    en_US: Search the web, news and places, read page content, get answers with sources. Data from Serper and Exa.
+    zh_Hans: 搜网页、新闻和地点，读取页面内容，得到带来源的答案。数据来自 Serper 与 Exa。
+    ja_JP: ウェブ、ニュース、場所を検索し、ページ本文を読み取り、出典付きの回答を得る。データはSerperとExaから。
+    pt_BR: Pesquise a web, notícias e lugares, leia o conteúdo de páginas, obtenha respostas com fontes. Dados da Serper e Exa.
+  llm: Search the web, news, places, scholar, shopping, images or videos; read a web page; get an answer with sources. Use this when the user needs live information from the internet.
 parameters:
 - name: action
   type: select
