@@ -22,7 +22,8 @@ jobs:
             https://github.com/langgenius/dify-plugin-daemon/releases/latest/download/dify-plugin-linux-amd64
           chmod +x "$RUNNER_TEMP/bin/dify"
       - name: Package
-        run: "$RUNNER_TEMP/bin/dify" plugin package . -o glasser.difypkg
+        run: |
+          "$RUNNER_TEMP/bin/dify" plugin package . -o glasser.difypkg
       - uses: actions/upload-artifact@v4
         with:
           name: glasser.difypkg
