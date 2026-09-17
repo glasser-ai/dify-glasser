@@ -4,12 +4,12 @@ version = "0.3.3"
 description = "Dify tool plugin for Glasser: paid third-party API endpoints through one Key."
 requires-python = ">=3.12"
 dependencies = [
-    "dify_plugin>=0.9.0,<0.10.0",
+    "dify_plugin==0.9.1",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8",
+    "pytest>=8,<9",
 ]
 
 [tool.pytest.ini_options]

@@ -39,7 +39,12 @@ Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hun
 
 ## Security and privacy notes
 
-The plugin calls one fixed HTTPS host, `api.glasser.ai`, with the user's Glasser Key from Dify's credential store. Run inputs are whatever the user asks a provider to process and may contain personal data (for example an email address to enrich); the plugin forwards them to that one host and stores nothing. No command or code execution, no file access, no user-controlled URLs.
+- **Network**: one fixed HTTPS host, `api.glasser.ai` (declared in `manifest.yaml` `network.domains`). `app.glasser.ai` appears only as a link in messages; `www.reddit.com` appears only as an input value passed to Apify through Glasser. The plugin never connects to either.
+- **Personal data**: run inputs are whatever the user asks a provider to process (names, emails, LinkedIn URLs, domains) and are forwarded to that one host; the plugin stores nothing.
+- **No payments**: the plugin moves no money. A Glasser workspace is prepaid on glasser.ai; each tool call is one metered API run and the response reports its charge. Words like "charge" and "paid" in the README describe that metering.
+- **The `SELECT … FROM person` string** in `utils/routes.py` is the query language of the People Data Labs search API, sent as request input to `api.glasser.ai`; the plugin runs no SQL and opens no database.
+- **The one file read** (`utils/glasser_client.py`) is the plugin's own bundled `manifest.yaml`, to put the version in the User-Agent header.
+- No command or code execution, no browser automation, no user-controlled URLs.
 
 ## Local validation
 

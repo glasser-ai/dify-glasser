@@ -400,6 +400,8 @@ def _sc_find_profiles(p):
 
 
 def _apify_subreddit(p):
+    # The URL is an input value handed to Apify through Glasser; the plugin
+    # itself never connects to reddit.com.
     sub = _need(p, "handle").lstrip("r/").lstrip("@")
     return {"startUrls": [{"url": f"https://www.reddit.com/r/{sub}/"}]}
 
