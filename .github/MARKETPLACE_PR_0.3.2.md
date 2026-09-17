@@ -4,7 +4,7 @@
 
 - **Author**: glasser-ai
 - **Plugin name**: glasser
-- **Version**: 0.3.1
+- **Version**: 0.3.2
 - **Source repository**: https://github.com/glasser-ai/dify-glasser
 - **Contact**: support@glasser.ai
 
