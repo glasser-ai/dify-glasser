@@ -4,7 +4,7 @@
 
 - **Author**: glasser-ai
 - **Plugin name**: glasser
-- **Version**: 0.1.0
+- **Version**: 0.3.1
 - **Source repository**: https://github.com/glasser-ai/dify-glasser
 - **Contact**: support@glasser.ai
 
@@ -15,7 +15,7 @@
 
 ## What changed
 
-Glasser sells runnable third-party API endpoints (People Data Labs, Serper, DataForSEO, Ahrefs, Semrush and others) under one prepaid Key. This plugin exposes the seven operations of the Glasser API as tools: `search` the catalog, `inspect` an endpoint's input schema and exact price, `run` it, `runs_get`, `runs_list`, `runs_stop`, and `balance`. Tool output is the API's own JSON; errors are returned as the API's error envelope; every run carries an idempotency key so a retry never charges twice.
+Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa, ScrapeCreators and others) under one prepaid Key. This plugin exposes five capability tools: Find People, Company Intelligence, SEO Research, Web Research and Social Research. Each takes an `action` and a `provider`; `provider = auto` lets the plugin route to a good source for that action, and naming a provider forces it. Tool output is the Glasser API's own JSON for the run (provider output, exact charge, run URL) plus a `routed` block naming the endpoint that served it; errors are the API's error envelope; every run carries an idempotency key so a retry never charges twice.
 
 ## Risk level
 
@@ -41,8 +41,8 @@ The plugin calls one fixed HTTPS host, `api.glasser.ai`, with the user's Glasser
 
 ## Local validation
 
-- `uv run pytest` (12 offline tests) and `dify plugin package .` pass in CI: https://github.com/glasser-ai/dify-glasser/actions
-- Tested on **Dify Cloud** on 2026-09-17: installed the package as a local plugin, configured the Key (validation succeeded), ran `balance` as a Chatflow tool node (SUCCESS), and ran an Agent app with all seven tools attached. The agent performed `search` → `inspect` → `run` on `ahrefs /v3/public/domain-rating-free` and reported the run status, the provider's HTTP status, the charge and the run URL.
+- `uv run pytest` (25 offline tests, including every routing entry) and `dify plugin package .` pass in CI: https://github.com/glasser-ai/dify-glasser/actions
+- Tested on **Dify Cloud** on 2026-09-17: installed the package as a local plugin, configured the Key (validation succeeded), and ran an Agent app (gpt-5) with the five tools attached. Verified live: people_search (apollo), company_intelligence tech_stack (builtwith), seo_research keyword_overview (semrush and serpstat) and domain_rating (ahrefs), web_research search (serper), social_research reddit_subreddit (scrapecreators). Each answer reported the provider, endpoint, charge and run URL; a provider 400 was reported as a $0.00 provider error, not as a tool failure.
 - **Limitation**: not tested on Dify Community Edition.
 
 ## Reviewer notes
