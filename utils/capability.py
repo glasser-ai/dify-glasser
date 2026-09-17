@@ -15,7 +15,7 @@ from dify_plugin.entities.tool import ToolInvokeMessage
 
 from utils import routes
 from utils.glasser_client import TERMINAL_STATUSES, GlasserApiError
-from utils.tool_support import client_for, error_messages, invalid_input_messages, summarize_run
+from utils.tool_support import client_for, error_messages, fit_output, invalid_input_messages, summarize_run
 
 _CREATE_TIMEOUT_S = 120.0
 _WAIT_BUDGET_S = 180.0
@@ -47,6 +47,7 @@ def run_capability(tool: Tool, tool_name: str, params: dict[str, Any]) -> Iterab
         )
         return
 
+    run = fit_output(run)
     yield tool.create_json_message({**run, "idempotency_key": idempotency_key, "routed": _routed(route, provider, params, run_input)})
     header = f"{tool_name}.{params.get('action')} via {provider}" + (" (auto)" if (params.get("provider") or "auto") == "auto" else "")
     yield tool.create_text_message(header + "\n" + summarize_run(run))

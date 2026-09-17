@@ -153,6 +153,7 @@ def summarize_inspect(detail: dict[str, Any]) -> str:
 
 def summarize_run(run: dict[str, Any], idempotency_key: Optional[str] = None) -> str:
     status = run.get("status")
+    truncated = run.get("output_truncated")
     provider_response = run.get("provider_response") if isinstance(run.get("provider_response"), dict) else None
     basis = run.get("charge_basis") if isinstance(run.get("charge_basis"), dict) else {}
     lines = [f"Run {status}: {run.get('provider')} {run.get('endpoint')} v{run.get('endpoint_version')}"]
@@ -167,6 +168,8 @@ def summarize_run(run: dict[str, Any], idempotency_key: Optional[str] = None) ->
         lines.append(f"Charge: ${run.get('charge_usd')} ({basis.get('clause', 'clause unknown')})")
     if run.get("run_url"):
         lines.append(f"Run URL: {run.get('run_url')}")
+    if truncated:
+        lines.append("Output was trimmed to fit the context; the full provider output is at the run URL.")
     if idempotency_key:
         lines.append(f"idempotency_key: {idempotency_key} (reuse it to retry; it never charges twice)")
     return "\n".join(lines)
@@ -190,3 +193,46 @@ def summarize_balance(result: dict[str, Any]) -> str:
         f"Balance ${result.get('balance_usd')}, held ${result.get('held_usd')}, "
         f"available ${result.get('available_usd')} (exact decimal strings; do not use float arithmetic)."
     )
+
+
+# ------------------------------------------------------------ size budget
+
+
+def trim_payload(value: Any, max_items: int, max_chars: int) -> Any:
+    """Cap every list to max_items and every string to max_chars, recursively.
+
+    Structure is kept: keys are never renamed or dropped, so the agent still
+    sees the shape of the provider's answer. A cut list gets a trailing
+    marker string saying how many items were left out.
+    """
+    if isinstance(value, dict):
+        return {k: trim_payload(v, max_items, max_chars) for k, v in value.items()}
+    if isinstance(value, list):
+        head = [trim_payload(v, max_items, max_chars) for v in value[:max_items]]
+        if len(value) > max_items:
+            head.append(f"... {len(value) - max_items} more items omitted")
+        return head
+    if isinstance(value, str) and len(value) > max_chars:
+        return value[:max_chars] + f"... [{len(value) - max_chars} more characters omitted]"
+    return value
+
+
+def fit_output(run: dict[str, Any], budget_chars: int = 60_000) -> dict[str, Any]:
+    """Shrink run.output until the run serialises under budget_chars.
+
+    Provider payloads can run to megabytes (a full technology stack, a
+    backlink dump). The agent's context cannot hold that, and Dify feeds
+    the whole JSON message to the model. The full output stays in the run
+    itself, reachable at run_url and through runs_get.
+    """
+    if len(json.dumps(run)) <= budget_chars:
+        return run
+    output = run.get("output")
+    for max_items, max_chars in ((50, 4000), (25, 2000), (10, 1000), (5, 500), (3, 200)):
+        trimmed = trim_payload(output, max_items, max_chars)
+        candidate = {**run, "output": trimmed, "output_truncated": True,
+                     "output_note": "Output trimmed to fit the context; the full provider output is at run_url and through runs_get."}
+        if len(json.dumps(candidate)) <= budget_chars:
+            return candidate
+    return {**run, "output": None, "output_truncated": True,
+            "output_note": "Output too large for the context; read it at run_url or fetch it with runs_get."}

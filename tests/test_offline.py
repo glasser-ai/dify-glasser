@@ -180,3 +180,15 @@ def test_search_summary_mentions_cursor_and_caveat():
     text = summarize_search({"data": [], "total": 12, "next_cursor": "abc"})
     assert "next_cursor: abc" in text
     assert "Low scores do not show" in text
+
+
+def test_fit_output_trims_large_payloads_but_keeps_shape():
+    from utils.tool_support import fit_output
+    big = {"status": "COMPLETED", "run_url": "u", "output": {"Results": [{"Paths": [{"Technologies": [{"Name": f"t{i}", "Desc": "x" * 500} for i in range(3000)]}]}]}}
+    out = fit_output(big, budget_chars=20_000)
+    assert out["output_truncated"] is True
+    assert len(json.dumps(out)) <= 20_000
+    techs = out["output"]["Results"][0]["Paths"][0]["Technologies"]
+    assert techs[0]["Name"] == "t0" and techs[-1].endswith("more items omitted")
+    small = {"status": "COMPLETED", "output": {"a": 1}}
+    assert fit_output(small) is small
