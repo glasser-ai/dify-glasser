@@ -12,38 +12,28 @@ plugin sandbox.
 """
 
 import json
-import os
-import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from typing import Any, Optional
 
-BASE_URL = "https://api.glasser.ai"
-CONSOLE_KEYS_URL = "https://app.glasser.ai/keys"
+# The host is written into the urlopen call itself, not held in a variable:
+# the Marketplace scanner extracts hosts from the call's own arguments and
+# counts any call without one as "address built at runtime".
+HOST = "api.glasser.ai"
+CONSOLE_HINT = "Create one in the Glasser console under Keys."
 TERMINAL_STATUSES = frozenset({"COMPLETED", "FAILED", "STOPPED"})
 
 # Rate-limit backoff cap: the API's retry_after_ms is honoured up to this.
 _MAX_RATE_LIMIT_WAIT_S = 15.0
 
 
-def _plugin_version() -> str:
-    """Version from the bundled manifest, so the User-Agent cannot drift."""
-    manifest = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "manifest.yaml"
-    )
-    try:
-        with open(manifest, encoding="utf-8") as f:
-            match = re.search(r"^version:\s*[\"']?([0-9][\w.\-]*)", f.read(), re.M)
-        if match:
-            return match.group(1)
-    except OSError:
-        pass
-    return "unknown"
+# Kept equal to manifest.yaml by tests/test_offline.py; a constant rather than
+# a read of the manifest, so the plugin touches no file at runtime.
+PLUGIN_VERSION = "0.4.2"
 
-
-USER_AGENT = f"glasser-dify-plugin/{_plugin_version()} (+https://github.com/glasser-ai/dify-glasser)"
+USER_AGENT = f"glasser-dify-plugin/{PLUGIN_VERSION} (+https://github.com/glasser-ai/dify-glasser)"
 
 
 class GlasserApiError(Exception):
@@ -73,14 +63,11 @@ def _clean(params: dict[str, Any]) -> dict[str, Any]:
 
 
 class GlasserClient:
-    def __init__(self, api_key: str, base_url: str = BASE_URL):
+    def __init__(self, api_key: str):
         key = (api_key or "").strip()
         if not key:
-            raise _synthetic(
-                "unauthorized", f"Missing Glasser Key. Create one at {CONSOLE_KEYS_URL}.", 401
-            )
+            raise _synthetic("unauthorized", f"Missing Glasser Key. {CONSOLE_HINT}", 401)
         self.api_key = key
-        self.base_url = base_url.rstrip("/")
 
     # ------------------------------------------------------------------ core
 
@@ -102,9 +89,8 @@ class GlasserClient:
         ``retry_transport`` is set. Callers pass retry_transport=False for
         calls whose second attempt would not be a plain read.
         """
-        url = f"{self.base_url}{path}"
         if query:
-            url = f"{url}?{urllib.parse.urlencode(_clean(query), quote_via=urllib.parse.quote)}"
+            path = f"{path}?{urllib.parse.urlencode(_clean(query), quote_via=urllib.parse.quote)}"
         data = json.dumps(body).encode("utf-8") if body is not None else None
         hdrs = {
             "Authorization": f"Bearer {self.api_key}",
@@ -119,9 +105,13 @@ class GlasserClient:
         rate_limit_retried = False
         transport_retried = False
         while True:
-            req = urllib.request.Request(url, data=data, headers=hdrs, method=method)
             try:
-                with urllib.request.urlopen(req, timeout=timeout) as response:
+                with urllib.request.urlopen(
+                    urllib.request.Request(
+                        f"https://api.glasser.ai{path}", data=data, headers=hdrs, method=method
+                    ),
+                    timeout=timeout,
+                ) as response:
                     raw = response.read().decode("utf-8")
                     return response.status, (json.loads(raw) if raw.strip() else None)
             except urllib.error.HTTPError as e:
@@ -146,7 +136,7 @@ class GlasserClient:
                     transport_retried = True
                     time.sleep(2)
                     continue
-                raise _synthetic("transport_error", f"Could not reach {self.base_url}: {e.reason}")
+                raise _synthetic("transport_error", f"Could not reach {HOST}: {e.reason}")
             except (TimeoutError, OSError) as e:
                 if retry_transport and not transport_retried:
                     transport_retried = True

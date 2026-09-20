@@ -211,3 +211,9 @@ def test_fit_output_trims_large_payloads_but_keeps_shape():
     assert techs[0]["Name"] == "t0" and techs[-1].endswith("more items omitted")
     small = {"status": "COMPLETED", "output": {"a": 1}}
     assert fit_output(small) is small
+
+
+def test_plugin_version_matches_manifest():
+    declared = yaml.safe_load((Path(__file__).resolve().parents[1] / "manifest.yaml").read_text())["version"]
+    assert gc.PLUGIN_VERSION == str(declared)
+    assert f"glasser-dify-plugin/{declared} " in gc.USER_AGENT

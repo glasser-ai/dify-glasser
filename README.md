@@ -1,7 +1,7 @@
 # Glasser
 
 **Author:** glasser-ai
-**Version:** 0.4.1
+**Version:** 0.4.2
 **Type:** tool
 
 Premium go-to-market data for your Dify agents — people search, company intelligence, keywords & SEO, web research, social media search and US market data — all through **one Glasser Key**, backed by Apollo, People Data Labs, Semrush, Ahrefs, Serper, Exa, ScrapeCreators, RentCast and more.

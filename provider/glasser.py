@@ -3,7 +3,7 @@ from typing import Any
 from dify_plugin import ToolProvider
 from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
-from utils.glasser_client import CONSOLE_KEYS_URL, GlasserApiError, GlasserClient
+from utils.glasser_client import CONSOLE_HINT, GlasserApiError, GlasserClient
 
 
 class GlasserProvider(ToolProvider):
@@ -17,15 +17,14 @@ class GlasserProvider(ToolProvider):
         api_key = (credentials.get("glasser_api_key") or "").strip()
         if not api_key:
             raise ToolProviderCredentialValidationError(
-                f"A Glasser Key is required. Create one at {CONSOLE_KEYS_URL}."
+                f"A Glasser Key is required. {CONSOLE_HINT}"
             )
         try:
             GlasserClient(api_key).balance()
         except GlasserApiError as e:
             if e.code == "unauthorized":
                 raise ToolProviderCredentialValidationError(
-                    f"Invalid or missing API key. Create a Key at {CONSOLE_KEYS_URL} "
-                    "and paste it exactly as issued."
+                    f"Invalid or missing API key. {CONSOLE_HINT} Paste it exactly as issued."
                 ) from e
             raise ToolProviderCredentialValidationError(
                 f"Could not verify the Glasser Key ({e.code}): {e.message}"

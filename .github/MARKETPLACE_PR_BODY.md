@@ -17,7 +17,7 @@
 
 Release notes: https://github.com/glasser-ai/dify-glasser/releases
 
-**v0.4.1 is a documentation-only release; the code is identical to v0.4.0.** The README is rewritten as a Marketplace listing: a "Why this plugin" section, a shorter tools table, goal-oriented example prompts, a Setup with the pricing model ($1 signup grant, prepaid, per call), and usage notes written for a Dify user. The API-level material (request flow, run statuses, build and remote-debug commands) moved to `CONTRIBUTING.md`, which is excluded from the package.
+**v0.4.2 makes the plugin's network behaviour statically verifiable; behaviour is unchanged.** The API host is now written into the `urlopen` call itself instead of being assembled from a variable, so the Marketplace scanner extracts it (previously reported as 2/2 call sites with an address built at runtime). The console URL literal is gone from the Python source (the provider's `help.url` still links to it), so the only host in the code is the one declared in `network.domains`. The version in the User-Agent header is a constant checked against `manifest.yaml` by a test, replacing the one file read the plugin had. The local Marketplace validator (`dify-marketplace-toolkit`) now reports one domain, no runtime-constructed call sites, no undeclared domains, and network access as the only sensitive capability.
 
 Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hunter, BuiltWith, DataForSEO, Semrush, Ahrefs, Serper, Exa, ScrapeCreators, RentCast and others) under one prepaid Key. This plugin exposes six capability tools: Find Prospects, Company Intelligence, Keywords & SEO, Web Research, Social Media Search and Market Data. Each tool is one call to `POST /v1/solutions/gtm/<capability>` on the Glasser API with the tool's parameters as they are; routing to a provider, parameter translation and fallback happen in the API, not in the plugin. `provider = auto` (the default) lets Glasser pick the source, and naming a provider forces it. Tool output is the Glasser API's own JSON for the run (provider, endpoint, provider output, exact charge, run URL); errors are the API's error envelope; every run carries an idempotency key so a retry never charges twice.
 
@@ -41,16 +41,17 @@ Glasser sells runnable third-party API operations (Apollo, People Data Labs, Hun
 
 ## Security and privacy notes
 
-- **Network**: one fixed HTTPS host, `api.glasser.ai` (declared in `manifest.yaml` `network.domains`). `app.glasser.ai` appears only as a link in messages; the plugin never connects to it.
+- **Network**: one fixed HTTPS host, `api.glasser.ai`, written into the `urlopen` call and declared in `manifest.yaml` `network.domains`. `app.glasser.ai` appears only as the credential form's help link in `provider/glasser.yaml`; the plugin never connects to it.
 - **Personal data**: run inputs are whatever the user asks a provider to process (names, emails, LinkedIn URLs, domains) and are forwarded to that one host; the plugin stores nothing.
 - **No payments**: the plugin moves no money. A Glasser workspace is prepaid on glasser.ai; each tool call is one metered API run and the response reports its charge. Words like "charge" and "paid" in the README describe that metering.
-- **The one file read** (`utils/glasser_client.py`) is the plugin's own bundled `manifest.yaml`, to put the version in the User-Agent header.
+- **No file reads.** The plugin version in the User-Agent header is a constant, kept equal to `manifest.yaml` by an offline test.
 - No command or code execution, no browser automation, no user-controlled URLs.
 
 ## Local validation
 
 - `uv run pytest` (14 offline tests) and `dify plugin package .` pass in CI: https://github.com/glasser-ai/dify-glasser/actions
-- **Dify Cloud**, 2026-09-17: v0.4.0 (same code as this release) installed as a local plugin, Key validated (the free balance call), all six tools attached to an Agent app (gpt-5). Every tool is a pass-through to `POST https://api.glasser.ai/v1/solutions/gtm/<capability>`; those endpoints were exercised with real provider keys for every (action, provider) route before release, including the refusal paths (unsupported country, a filter the named provider cannot apply), which return the API's error envelope with nothing run and nothing charged.
+- **Dify Cloud**, 2026-09-17: v0.4.0 installed as a local plugin, Key validated (the free balance call), all six tools attached to an Agent app (gpt-5). Every tool is a pass-through to `POST https://api.glasser.ai/v1/solutions/gtm/<capability>`; those endpoints were exercised with real provider keys for every (action, provider) route before release, including the refusal paths (unsupported country, a filter the named provider cannot apply), which return the API's error envelope with nothing run and nothing charged.
+- v0.4.2 changes only how the request URL is assembled and two error strings; the offline tests (15) cover the request path, including the exact URL sent. **Dify Cloud**, 2026-09-20: v0.4.2 installed as a local plugin over the Marketplace v0.4.1 (credential carried over), Find Prospects run from the Agent app: `POST /v1/solutions/gtm/people_search` → run COMPLETED, provider apollo HTTP 200, charge $0.00, run URL and idempotency key returned.
 - **Limitation**: not tested on Dify Community Edition.
 
 ## Reviewer notes
