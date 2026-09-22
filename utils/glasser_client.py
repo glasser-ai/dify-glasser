@@ -31,7 +31,7 @@ _MAX_RATE_LIMIT_WAIT_S = 15.0
 
 # Kept equal to manifest.yaml by tests/test_offline.py; a constant rather than
 # a read of the manifest, so the plugin touches no file at runtime.
-PLUGIN_VERSION = "0.4.2"
+PLUGIN_VERSION = "0.4.3"
 
 USER_AGENT = f"glasser-dify-plugin/{PLUGIN_VERSION} (+https://github.com/glasser-ai/dify-glasser)"
 

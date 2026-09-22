@@ -31,10 +31,10 @@ credentials_for_provider:
       ja_JP: gl_...
       pt_BR: gl_...
     help:
-      en_US: Create a Key at app.glasser.ai. One Key covers every data source, pay per call, no signup at each vendor. Validation calls the free balance endpoint and charges nothing.
-      zh_Hans: 在 app.glasser.ai 创建 Key。一个 Key 覆盖全部数据源，按次付费，无需在各供应商注册。校验只调用免费的余额接口，不产生费用。
-      ja_JP: app.glasser.aiでKeyを作成。1つのKeyで全データソースを利用、呼び出しごとの従量課金、各ベンダーへの登録は不要。検証は無料の残高エンドポイントを呼ぶだけで課金されません。
-      pt_BR: Crie uma Key em app.glasser.ai. Uma Key cobre todas as fontes de dados, pagamento por chamada, sem cadastro em cada fornecedor. A validação chama o endpoint gratuito de saldo e não cobra nada.
+      en_US: Get an API key from the Glasser Console.
+      zh_Hans: 从 Glasser 控制台获取 API key。
+      ja_JP: Glasser コンソールで API キーを取得してください。
+      pt_BR: Obtenha uma chave de API no Console do Glasser.
     url: "https://app.glasser.ai/keys"
 tools:
 - tools/web_research.yaml
