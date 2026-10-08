@@ -1,7 +1,7 @@
 # Glasser
 
 **Author:** glasser-ai
-**Version:** 0.4.3
+**Version:** 0.4.4
 **Type:** tool
 
 Glasser is a metered gateway in front of paid data APIs: one Key, one prepaid balance, and every call returns the exact amount it cost. This plugin wires six of those capabilities into Dify, so an agent can look up a person, profile a company, pull keyword and backlink figures, read the live web, watch social platforms, or price US property — without you holding an account at Apollo, Semrush, Ahrefs, Serper, Exa, ScrapeCreators or RentCast.
